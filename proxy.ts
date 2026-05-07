@@ -3,8 +3,6 @@ import { auth } from "@/lib/auth";
 
 const protectedRoutes = ["/dashboard"];
 
-// Runtime CORS for /api/* — handles credentials-bearing requests correctly
-// (dynamic per-request origin, required when Access-Control-Allow-Credentials: true)
 const allowedOrigins = [
   process.env.BETTER_AUTH_URL,
   process.env.NEXT_PUBLIC_APP_URL,
@@ -21,7 +19,6 @@ export async function proxy(req: NextRequest) {
   const origin = req.headers.get("origin") ?? "";
   const isAllowedOrigin = allowedOrigins.includes(origin);
 
-  // CORS preflight — only for /api/* routes
   if (req.method === "OPTIONS" && path.startsWith("/api/")) {
     return NextResponse.json(
       {},
@@ -34,7 +31,6 @@ export async function proxy(req: NextRequest) {
     );
   }
 
-  // Auth redirect: protect dashboard routes
   const isProtectedRoute = protectedRoutes.some(
     (route) => path === route || path.startsWith(`${route}/`),
   );
@@ -46,7 +42,6 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // Auth redirect: send logged-in users away from login page
   if (path === "/login") {
     const session = await auth.api.getSession({ headers: req.headers });
     if (session) {
@@ -54,9 +49,38 @@ export async function proxy(req: NextRequest) {
     }
   }
 
+  if (path.startsWith("/admin/")) {
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl));
+    }
+    if (session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  }
+
+  if (path.startsWith("/principal/")) {
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl));
+    }
+    if (session.user.role !== "PRINCIPAL" && session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  }
+
+  if (path.startsWith("/teacher/")) {
+    const session = await auth.api.getSession({ headers: req.headers });
+    if (!session) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl));
+    }
+    if (session.user.role !== "TEACHER" && session.user.role !== "ADMIN" && session.user.role !== "PRINCIPAL") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  }
+
   const response = NextResponse.next();
 
-  // Attach CORS headers on /api/* responses
   if (path.startsWith("/api/") && isAllowedOrigin) {
     response.headers.set("Access-Control-Allow-Origin", origin);
     Object.entries(corsHeaders).forEach(([key, value]) => {
