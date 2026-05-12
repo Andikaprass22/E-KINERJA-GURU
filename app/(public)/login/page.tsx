@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { authClient, type User } from "@/lib/auth-client";
 import {
   Card,
   CardContent,
@@ -38,7 +38,16 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/dashboard");
+      const session = result.data as unknown as { user: User };
+      const role = session?.user?.role as "ADMIN" | "PRINCIPAL" | "TEACHER" | undefined;
+
+      if (role === "ADMIN") {
+        router.push("/admin");
+      } else if (role === "PRINCIPAL") {
+        router.push("/principal");
+      } else {
+        router.push("/teacher");
+      }
     } catch {
       setError("Terjadi kesalahan yang tidak terduga");
     } finally {

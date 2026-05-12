@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/admin", "/principal", "/teacher", "/profile"];
 
 const allowedOrigins = [
   process.env.BETTER_AUTH_URL,
@@ -45,7 +45,14 @@ export async function proxy(req: NextRequest) {
   if (path === "/login") {
     const session = await auth.api.getSession({ headers: req.headers });
     if (session) {
-      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+      const role = session.user.role;
+      if (role === "ADMIN") {
+        return NextResponse.redirect(new URL("/admin", req.nextUrl));
+      } else if (role === "PRINCIPAL") {
+        return NextResponse.redirect(new URL("/principal", req.nextUrl));
+      } else {
+        return NextResponse.redirect(new URL("/teacher", req.nextUrl));
+      }
     }
   }
 
@@ -55,7 +62,7 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
     if (session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.redirect(new URL("/teacher", req.nextUrl));
     }
   }
 
@@ -65,7 +72,7 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
     }
     if (session.user.role !== "PRINCIPAL" && session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.redirect(new URL("/teacher", req.nextUrl));
     }
   }
 
@@ -73,9 +80,6 @@ export async function proxy(req: NextRequest) {
     const session = await auth.api.getSession({ headers: req.headers });
     if (!session) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
-    }
-    if (session.user.role !== "TEACHER" && session.user.role !== "ADMIN" && session.user.role !== "PRINCIPAL") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   }
 

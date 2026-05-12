@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { changePasswordAction } from "@/lib/actions/profile";
 
 export function ChangePasswordForm() {
   const router = useRouter();
@@ -35,21 +36,14 @@ export function ChangePasswordForm() {
     }
 
     try {
-      const response = await fetch("/api/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          currentPassword,
-          newPassword,
-        }),
-      });
+      const formData = new FormData();
+      formData.append("currentPassword", currentPassword);
+      formData.append("newPassword", newPassword);
 
-      const data = await response.json();
+      const result = await changePasswordAction(formData);
 
-      if (!response.ok) {
-        setError(data.error || "Gagal mengubah password");
+      if (!result.success) {
+        setError(result.error || "Gagal mengubah password");
         setIsLoading(false);
         return;
       }
@@ -61,7 +55,7 @@ export function ChangePasswordForm() {
       setIsLoading(false);
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/profile");
         router.refresh();
       }, 2000);
     } catch {

@@ -86,12 +86,12 @@
 
 ### Implementasi US6
 
-- [ ] T027 [P] [US6] Buat Server Action manajemen user di `lib/actions/users.ts` — fungsi `createUserAction()`, `updateUserAction()`, `toggleUserStatusAction()`, `resetPasswordAction()`. Setiap action call `updateTag('users-list')` setelah mutasi. Gunakan Better Auth admin API untuk `createUser` dan `setRole`.
-- [ ] T028 [US6] Buat halaman daftar pengguna di `app/(dashboard)/admin/users/page.tsx` — async Server Component dengan `'use cache'` + `cacheTag('users-list')`, query semua user dari Prisma, render `UsersTable`
-- [ ] T029 [P] [US6] Buat komponen tabel pengguna di `components/dashboard/users-table.tsx` — shadcn Table dengan kolom: Nama, Username, Role (Badge), Status (Badge aktif/nonaktif), Aksi (Edit, Reset Password, Toggle Status). Tambahkan animasi row dengan Framer Motion
-- [ ] T030 [US6] Buat halaman tambah pengguna di `app/(dashboard)/admin/users/new/page.tsx` — form tambah guru/kepala sekolah dengan field: nama lengkap, username (unik), password awal, role selector
-- [ ] T031 [P] [US6] Buat komponen form user di `components/forms/user-form.tsx` — shadcn Form, Input, Select untuk role, Button, validasi username unik via Server Action
-- [ ] T032 [US6] Buat halaman edit pengguna di `app/(dashboard)/admin/users/[id]/edit/page.tsx` — preload data user, form edit nama dan status aktif, konfirmasi reset password
+- [X] T027 [P] [US6] Buat Server Action manajemen user di `lib/actions/users.ts` — fungsi `createUserAction()`, `updateUserAction()`, `toggleUserStatusAction()`, `resetPasswordAction()`. Setiap action call `updateTag('users-list')` setelah mutasi. Gunakan Better Auth admin API untuk `createUser` dan `setRole`.
+- [X] T028 [US6] Buat halaman daftar pengguna di `app/(dashboard)/admin/users/page.tsx` — async Server Component dengan `'use cache'` + `cacheTag('users-list')`, query semua user dari Prisma, render `UsersTable`
+- [X] T029 [P] [US6] Buat komponen tabel pengguna di `components/dashboard/users-table.tsx` — shadcn Table dengan kolom: Nama, Username, Role (Badge), Status (Badge aktif/nonaktif), Aksi (Edit, Reset Password, Toggle Status). Tambahkan animasi row dengan Framer Motion
+- [X] T030 [US6] Buat halaman tambah pengguna di `app/(dashboard)/admin/users/new/page.tsx` — form tambah guru/kepala sekolah dengan field: nama lengkap, username (unik), password awal, role selector
+- [X] T031 [P] [US6] Buat komponen form user di `components/forms/user-form.tsx` — shadcn Form, Input, Select untuk role, Button, validasi username unik via Server Action
+- [X] T032 [US6] Buat halaman edit pengguna di `app/(dashboard)/admin/users/[id]/edit/page.tsx` — preload data user, form edit nama dan status aktif, konfirmasi reset password
 
 **Checkpoint**: User Story 6 selesai — Admin dapat mengelola semua akun pengguna
 
@@ -105,12 +105,12 @@
 
 ### Implementasi US3
 
-- [ ] T033 [P] [US3] Buat Server Actions semester di `lib/actions/semesters.ts` — fungsi `createSemesterAction()`, `activateSemesterAction()` (deactivate yang lain dulu), `updateDeadlineAction()`. Setiap action call `updateTag('semesters')` + `updateTag('deadlines')`
-- [ ] T034 [US3] Buat halaman daftar semester di `app/(dashboard)/admin/semesters/page.tsx` — async Server Component `'use cache'` + `cacheTag('semesters')`, tampilkan daftar semester dengan status aktif/arsip
-- [ ] T035 [P] [US3] Buat komponen kartu semester di `components/dashboard/semester-card.tsx` — tampilkan nama, periode, status (Badge), tombol aktivasi, animasi Framer Motion
-- [ ] T036 [US3] Buat halaman buat semester baru di `app/(dashboard)/admin/semesters/new/page.tsx` — form nama semester, tanggal mulai, tanggal selesai
-- [ ] T037 [US3] Buat halaman pengaturan deadline di `app/(dashboard)/admin/semesters/[id]/deadlines/page.tsx` — tampilkan 8 dokumen dengan input DateTime per dokumen, tombol simpan semua sekaligus
-- [ ] T038 [P] [US3] Buat komponen form deadline di `components/forms/deadline-form.tsx` — render 8 input datetime untuk setiap DocumentType, label Bahasa Indonesia, validasi tidak boleh di masa lampau saat semester baru
+- [X] T033 [P] [US3] Buat Server Actions semester di `lib/actions/semesters.ts` — fungsi `createSemesterAction()`, `activateSemesterAction()` (deactivate yang lain dulu), `updateDeadlineAction()`. Setiap action call `updateTag('semesters')` + `updateTag('deadlines')`
+- [X] T034 [US3] Buat halaman daftar semester di `app/(dashboard)/admin/semesters/page.tsx` — async Server Component `'use cache'` + `cacheTag('semesters')`, tampilkan daftar semester dengan status aktif/arsip
+- [X] T035 [P] [US3] Buat komponen kartu semester di `components/dashboard/semester-card.tsx` — tampilkan nama, periode, status (Badge), tombol aktivasi, animasi Framer Motion
+- [X] T036 [US3] Buat halaman buat semester baru di `app/(dashboard)/admin/semesters/new/page.tsx` — form nama semester, tanggal mulai, tanggal selesai
+- [X] T037 [US3] Buat halaman pengaturan deadline di `app/(dashboard)/admin/semesters/[id]/deadlines/page.tsx` — tampilkan 8 dokumen dengan input DateTime per dokumen, tombol simpan semua sekaligus
+- [X] T038 [P] [US3] Buat komponen form deadline di `components/forms/deadline-form.tsx` — render 8 input datetime untuk setiap DocumentType, label Bahasa Indonesia, validasi tidak boleh di masa lampau saat semester baru
 
 **Checkpoint**: User Story 3 selesai — Semester aktif dan batas waktu sudah terkonfigurasi
 

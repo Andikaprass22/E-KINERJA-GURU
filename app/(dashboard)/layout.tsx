@@ -2,12 +2,12 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { motion } from "framer-motion";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogoutButton } from "./logout-button";
 import { DashboardLoadingSkeleton } from "./loading-skeleton";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { AnimatedContent } from "@/components/dashboard/animated-content";
 
 async function SessionCheck({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({
@@ -61,14 +61,7 @@ async function SessionCheck({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </header>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex-1 p-4"
-          >
-            {children}
-          </motion.div>
+          <AnimatedContent>{children}</AnimatedContent>
         </main>
       </div>
     </SidebarProvider>

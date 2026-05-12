@@ -1,99 +1,156 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ArrowRight, CheckCircle2, Terminal } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { FileText, Users, BarChart3, Shield, Clock, CheckCircle2, ArrowRight, BookOpen, Award } from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <Card className="border-2 shadow-sm">
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Terminal className="h-4 w-4 text-primary" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 mb-6 shadow-lg">
+              <BookOpen className="h-10 w-10 text-white" />
+            </div>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">
+              E-KINERJA GURU
+            </h1>
+            <p className="text-xl text-gray-600 mb-2">
+              SD N 1 Pancor
+            </p>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Sistem manajemen kinerja dan administrasi guru yang modern, efisien, dan terintegrasi
+            </p>
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">
-            CodeNight Starter
-          </CardTitle>
-        </div>
-        <CardDescription className="text-base">
-          Lightweight Next.js 16 starter kit with Better Auth, Prisma, and
-          UploadThing
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="rounded-md bg-muted/50 p-3 border border-border/50">
-          <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-background border text-xs font-medium">
-              i
-            </span>
-            Edit{" "}
-            <code className="rounded bg-background border px-1.5 py-0.5 text-xs font-mono text-foreground">
-              app/(public)/page.tsx
-            </code>{" "}
-            to customize this page.
-          </p>
-        </div>
 
-        <div className="space-y-3">
-          <p className="font-semibold text-sm flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-primary" />
-            Quick Start Guide
-          </p>
-          <ul className="space-y-2.5 text-sm text-muted-foreground ml-6">
-            <li className="flex items-start gap-2">
-              <span className="text-primary/60 mt-0.5">•</span>
-              <span>
-                Fill environment variables in{" "}
-                <code className="text-xs font-mono bg-muted px-1 rounded">
-                  .env
-                </code>
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary/60 mt-0.5">•</span>
-              <span>
-                Run{" "}
-                <code className="text-xs font-mono bg-muted px-1 rounded">
-                  prisma migrate
-                </code>{" "}
-                and{" "}
-                <code className="text-xs font-mono bg-muted px-1 rounded">
-                  generate
-                </code>
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary/60 mt-0.5">•</span>
-              <span>
-                Run{" "}
-                <code className="text-xs font-mono bg-muted px-1 rounded">
-                  seed
-                </code>{" "}
-                script
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary/60 mt-0.5">•</span>
-              <span>Run dev server</span>
-            </li>
-          </ul>
-        </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16">
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-3">
+                  <FileText className="h-6 w-6 text-blue-600" />
+                </div>
+                <CardTitle>Manajemen Dokumen</CardTitle>
+                <CardDescription>
+                  Kelola 8 jenis dokumen administrasi pengajaran dengan mudah dan terstruktur
+                </CardDescription>
+              </CardHeader>
+            </Card>
 
-        <div className="pt-4 border-t flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">Ready to start?</p>
-          <Button asChild size="sm" className="gap-1.5">
-            <Link href="/login">
-              Login to Dashboard <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </Button>
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mb-3">
+                  <Users className="h-6 w-6 text-green-600" />
+                </div>
+                <CardTitle>Multi-Role Access</CardTitle>
+                <CardDescription>
+                  Akses berbeda untuk Admin, Kepala Sekolah, dan Guru sesuai kebutuhan
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center mb-3">
+                  <BarChart3 className="h-6 w-6 text-purple-600" />
+                </div>
+                <CardTitle>Evaluasi Kinerja</CardTitle>
+                <CardDescription>
+                  Sistem penilaian kinerja guru dengan skala bintang dan kategorisasi otomatis
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center mb-3">
+                  <Clock className="h-6 w-6 text-orange-600" />
+                </div>
+                <CardTitle>Batas Waktu Dokumen</CardTitle>
+                <CardDescription>
+                  Pengaturan deadline per dokumen dengan monitoring kepatuhan otomatis
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center mb-3">
+                  <Shield className="h-6 w-6 text-red-600" />
+                </div>
+                <CardTitle>Keamanan Terjamin</CardTitle>
+                <CardDescription>
+                  Sistem autentikasi modern dengan proteksi role-based dan data terenkripsi
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-2 hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center mb-3">
+                  <Award className="h-6 w-6 text-indigo-600" />
+                </div>
+                <CardTitle>Arsip Semester</CardTitle>
+                <CardDescription>
+                  Penyimpanan data berbasis semester dengan akses arsip yang mudah
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Fitur Unggulan
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-gray-900">Upload Dokumen Mudah</p>
+                  <p className="text-sm text-gray-600">Unggah 8 jenis dokumen dengan format yang didukung</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-gray-900">Monitoring Real-time</p>
+                  <p className="text-sm text-gray-600">Pantau progress dan status dokumen secara langsung</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-gray-900">Evaluasi Otomatis</p>
+                  <p className="text-sm text-gray-600">Kalkulasi nilai dan kategorisasi otomatis</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-gray-900">Laporan Lengkap</p>
+                  <p className="text-sm text-gray-600">Akses arsip dan laporan per semester</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Siap Menggunakan Sistem?
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Login untuk mengakses dashboard dan mulai mengelola kinerja guru
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button asChild size="lg" className="gap-2">
+                <Link href="/login">
+                  Login ke Dashboard
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

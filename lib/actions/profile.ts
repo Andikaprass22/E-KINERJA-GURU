@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { headers } from "next/headers";
 
 export async function changePasswordAction(formData: FormData) {
@@ -25,7 +25,7 @@ export async function changePasswordAction(formData: FormData) {
       },
     });
 
-    revalidateTag("user-profile", "max");
+    updateTag("user-profile");
     return { success: true };
   } catch (error) {
     console.error("Change password error:", error);

@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { headers } from "next/headers";
 
 export async function loginAction(formData: FormData) {
@@ -25,7 +25,7 @@ export async function loginAction(formData: FormData) {
       throw new Error("Login failed");
     }
 
-    revalidateTag("user-session", "max");
+    updateTag("user-session");
     return { success: true };
   } catch (error) {
     console.error("Login error:", error);
@@ -38,7 +38,7 @@ export async function logoutAction() {
     await auth.api.signOut({
       headers: await headers(),
     });
-    revalidateTag("user-session", "max");
+    updateTag("user-session");
     return { success: true };
   } catch (error) {
     console.error("Logout error:", error);

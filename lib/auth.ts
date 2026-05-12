@@ -6,6 +6,7 @@ import { username } from "better-auth/plugins";
 import { admin } from "better-auth/plugins/admin";
 import { createAccessControl } from "better-auth/plugins/access";
 import { prisma } from "./prisma";
+import bcrypt from "bcrypt";
 
 const statement = {
   user: ["read", "update"],
@@ -37,8 +38,37 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  user: {
+    additionalFields: {
+      username: {
+        type: "string",
+        required: true,
+        unique: true,
+      },
+      role: {
+        type: ["ADMIN", "PRINCIPAL", "TEACHER"],
+        required: false,
+        defaultValue: "TEACHER",
+        input: false,
+      },
+      isActive: {
+        type: "boolean",
+        required: false,
+        defaultValue: true,
+        input: false,
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
+    password: {
+      hash: async (password) => {
+        return await bcrypt.hash(password, 10);
+      },
+      verify: async ({ hash, password }) => {
+        return await bcrypt.compare(password, hash);
+      },
+    },
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7,
