@@ -80,7 +80,7 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow ring-1 ring-slate-900/5">
       <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white relative z-10">
         <div>
           <h3 className="text-sm font-medium text-slate-900">Monitoring Kinerja Guru</h3>
@@ -96,15 +96,15 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
       </div>
 
       <div className="overflow-x-auto relative shadow-[inset_-12px_0_15px_-10px_rgba(0,0,0,0.05)] sm:shadow-none">
-        <table className="w-full text-left border-collapse min-w-[700px]">
+        <table className="w-full text-left border-collapse min-w-[500px]">
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
               <th className="p-4 pl-5 sm:pl-6">Nama Guru</th>
-              <th className="p-4">Dokumen</th>
-              <th className="p-4">Progress Upload</th>
+              <th className="p-4 hidden sm:table-cell">Dokumen</th>
+              <th className="p-4 hidden md:table-cell">Progress Upload</th>
               <th className="p-4">Nilai</th>
               <th className="p-4">Kategori</th>
-              <th className="p-4">Status</th>
+              <th className="p-4 hidden sm:table-cell">Status</th>
               <th className="p-4 pr-5 sm:pr-6 text-center">Aksi</th>
             </tr>
           </thead>
@@ -119,12 +119,12 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
                   <td className="p-4 pl-5 sm:pl-6">
                     <span className="font-semibold text-slate-800">{row.teacherName}</span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 hidden sm:table-cell">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-medium">
                       <FileText size={14} /> {row.completedCount}/8
                     </span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 hidden md:table-cell">
                     <div className="flex items-center gap-3">
                       <div className="w-full max-w-[120px] h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
@@ -159,7 +159,7 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
                       <span className="text-slate-400">-</span>
                     )}
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 hidden sm:table-cell">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
                       isComplete
                         ? "bg-slate-50 text-slate-700 border-slate-200"

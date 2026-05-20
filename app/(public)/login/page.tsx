@@ -156,7 +156,7 @@ export default function LoginPage() {
           className="w-full max-w-sm"
         >
           <div className="lg:hidden mb-8 text-center">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-3 shadow-md shadow-indigo-200">
               <BookOpen className="h-6 w-6 text-white" />
             </div>
             <h1 className="font-bold text-slate-900">E-KINERJA GURU</h1>
@@ -208,7 +208,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm text-sm font-medium gap-2 transition-all active:scale-[0.98]"
+              className="w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white shadow-md shadow-indigo-200 text-sm font-medium gap-2 transition-all active:scale-[0.98] border-0"
               disabled={loading}
             >
               {loading ? (

@@ -63,7 +63,7 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 border-l-emerald-500 shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <p className="text-xs font-medium text-slate-500 mb-1">Dokumen Terkumpul</p>
@@ -76,7 +76,7 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
           <div className="flex items-center text-xs font-medium text-slate-500">Dari 8 dokumen</div>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 border-l-indigo-500 shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <p className="text-xs font-medium text-slate-500 mb-1">Progress</p>
@@ -89,7 +89,7 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
           <div className="flex items-center text-xs font-medium text-slate-500">Kelengkapan dokumen</div>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 border-l-amber-500 shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <p className="text-xs font-medium text-slate-500 mb-1">Deadline Terdekat</p>
@@ -108,7 +108,7 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 border-l-red-500 shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <p className="text-xs font-medium text-slate-500 mb-1">Dokumen Terlambat</p>
@@ -126,7 +126,7 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
 
       <SubmissionProgress completed={completedCount} total={8} />
 
-      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm">
+      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md ring-1 ring-slate-900/5">
         <div className="mb-6">
           <h3 className="text-base font-bold text-slate-900">Status Dokumen</h3>
           <p className="text-sm text-slate-500 mt-0.5">Daftar dokumen yang perlu diunggah untuk semester aktif</p>

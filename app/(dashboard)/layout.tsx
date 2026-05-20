@@ -35,7 +35,7 @@ async function SessionCheck({ children }: { children: React.ReactNode }) {
         <Sidebar className="border-r border-slate-200 bg-white shadow-2xl lg:shadow-none">
           <SidebarHeader className="h-16 flex items-center justify-between px-5 border-b border-slate-100 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm shadow-indigo-200">
                 E
               </div>
               <div className="group-data-[collapsible=icon]:hidden overflow-hidden transition-all duration-300">

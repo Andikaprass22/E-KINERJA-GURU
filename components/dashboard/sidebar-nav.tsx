@@ -80,7 +80,7 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
             </span>
 
             {isActive && (
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-indigo-600 rounded-r-full hidden lg:block" />
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-indigo-600 to-violet-600 rounded-r-full hidden lg:block" />
             )}
           </a>
         );

@@ -41,7 +41,7 @@ export function DashboardHeader({
 
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-indigo-600 text-white text-sm font-medium">
+            <AvatarFallback className="bg-gradient-to-br from-indigo-600 to-violet-600 text-white text-sm font-medium shadow-sm shadow-indigo-200">
               {userInitial}
             </AvatarFallback>
           </Avatar>

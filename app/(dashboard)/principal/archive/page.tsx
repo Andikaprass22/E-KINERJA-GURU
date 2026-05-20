@@ -91,7 +91,7 @@ export default function PrincipalArchivePage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm">
               <div className="mb-6">
                 <h3 className="text-base font-bold text-slate-900">Distribusi Kategori</h3>

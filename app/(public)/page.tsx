@@ -9,7 +9,7 @@ export default function HomePage() {
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="w-full px-6 lg:px-10 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-sm shadow-indigo-200">
               <BookOpen className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -17,28 +17,25 @@ export default function HomePage() {
               <p className="text-xs text-gray-500">SD N 1 Pancor</p>
             </div>
           </div>
-          <Button asChild size="sm">
-            <Link href="/login">Masuk</Link>
-          </Button>
         </div>
       </header>
 
       <section className="w-full px-6 lg:px-10 py-16 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
               Sistem Informasi Kinerja Guru
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               Kelola Kinerja Guru
-              <span className="text-blue-600"> Lebih Efisien</span>
+              <span className="text-indigo-600"> Lebih Efisien</span>
             </h2>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               Platform manajemen administrasi dan evaluasi kinerja guru yang modern, terstruktur, dan mudah digunakan untuk SD N 1 Pancor.
             </p>
             <div className="flex gap-3">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-md shadow-indigo-200 text-white border-0">
                 <Link href="/login">
                   Masuk ke Dashboard
                   <ArrowRight className="h-4 w-4" />
@@ -50,8 +47,8 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-4">
             <Card className="border-0 shadow-sm bg-white">
               <CardHeader className="pb-3 items-start text-left">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-2">
-                  <FileText className="h-5 w-5 text-blue-600" />
+                <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center mb-2">
+                  <FileText className="h-5 w-5 text-indigo-600" />
                 </div>
                 <CardTitle className="text-sm">Dokumen</CardTitle>
                 <CardDescription className="text-xs">Kelola 8 jenis dokumen pengajaran</CardDescription>
@@ -118,7 +115,7 @@ export default function HomePage() {
       <footer className="w-full px-6 lg:px-10 py-6 border-t bg-white">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+            <div className="w-6 h-6 rounded bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center">
               <BookOpen className="h-3 w-3 text-white" />
             </div>
             <span className="text-xs text-gray-500">E-KINERJA GURU &mdash; SD N 1 Pancor</span>

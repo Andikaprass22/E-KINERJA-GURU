@@ -148,10 +148,10 @@ export function UsersTable({ users }: UsersTableProps) {
             <TableHeader>
               <TableRow className="bg-slate-50 hover:bg-slate-50">
                 <TableHead className="font-bold text-slate-700">Nama</TableHead>
-                <TableHead className="font-bold text-slate-700">Username</TableHead>
-                <TableHead className="font-bold text-slate-700">Email</TableHead>
+                <TableHead className="font-bold text-slate-700 hidden sm:table-cell">Username</TableHead>
+                <TableHead className="font-bold text-slate-700 hidden md:table-cell">Email</TableHead>
                 <TableHead className="font-bold text-slate-700">Role</TableHead>
-                <TableHead className="font-bold text-slate-700">Status</TableHead>
+                <TableHead className="font-bold text-slate-700 hidden sm:table-cell">Status</TableHead>
                 <TableHead className="text-right font-bold text-slate-700">Aksi</TableHead>
               </TableRow>
             </TableHeader>
@@ -165,10 +165,10 @@ export function UsersTable({ users }: UsersTableProps) {
                   className="hover:bg-slate-50 group"
                 >
                   <TableCell className="font-semibold text-slate-900">{user.name}</TableCell>
-                  <TableCell className="text-slate-500">@{user.username}</TableCell>
-                  <TableCell className="text-slate-500">{user.email}</TableCell>
+                  <TableCell className="text-slate-500 hidden sm:table-cell">@{user.username}</TableCell>
+                  <TableCell className="text-slate-500 hidden md:table-cell">{user.email}</TableCell>
                   <TableCell>{getRoleBadge(user.role)}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <span className={`inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                       user.isActive
                         ? "bg-emerald-100 text-emerald-700"

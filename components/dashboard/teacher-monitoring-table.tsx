@@ -93,7 +93,7 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
 
   if (isLoading) {
     return (
-      <Card className="border-slate-100 shadow-sm">
+      <Card className="border-slate-100 shadow-md ring-1 ring-slate-900/5 hover:shadow-lg transition-shadow">
         <CardContent className="py-12 text-center text-slate-400">
           Memuat data monitoring...
         </CardContent>
@@ -103,7 +103,7 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
 
   if (submissions.length === 0) {
     return (
-      <Card className="border-slate-100 shadow-sm">
+      <Card className="border-slate-100 shadow-md ring-1 ring-slate-900/5 hover:shadow-lg transition-shadow">
         <CardContent className="py-12 text-center text-slate-400">
           Belum ada data guru
         </CardContent>
@@ -112,7 +112,7 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
   }
 
   return (
-    <Card className="border-slate-100 shadow-sm">
+    <Card className="border-slate-100 shadow-md ring-1 ring-slate-900/5 hover:shadow-lg transition-shadow">
       <CardHeader className="pb-4">
         <CardTitle className="text-sm font-medium text-slate-900">Data Guru</CardTitle>
         <CardDescription className="text-sm text-slate-500">
@@ -125,11 +125,11 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
             <TableHeader>
               <TableRow className="bg-slate-50 hover:bg-slate-50">
                 <TableHead className="min-w-[150px] font-bold text-slate-700">Nama Guru</TableHead>
-                <TableHead className="min-w-[120px] font-bold text-slate-700">Dokumen</TableHead>
-                <TableHead className="min-w-[100px] font-bold text-slate-700">Progress</TableHead>
+                <TableHead className="min-w-[120px] font-bold text-slate-700 hidden sm:table-cell">Dokumen</TableHead>
+                <TableHead className="min-w-[100px] font-bold text-slate-700 hidden md:table-cell">Progress</TableHead>
                 <TableHead className="min-w-[100px] font-bold text-slate-700">Nilai</TableHead>
                 <TableHead className="min-w-[100px] font-bold text-slate-700">Kategori</TableHead>
-                <TableHead className="min-w-[80px] font-bold text-slate-700">Status</TableHead>
+                <TableHead className="min-w-[80px] font-bold text-slate-700 hidden sm:table-cell">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -147,10 +147,10 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
                     className="hover:bg-slate-50"
                   >
                     <TableCell className="font-semibold text-slate-900">{row.teacherName}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <span className="text-sm text-slate-600">{row.completedCount}/8</span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <div className="flex items-center gap-2">
                         <Progress value={percentage} className="h-2 w-20" />
                         <span className="text-xs text-slate-500 font-medium">{percentage}%</span>
@@ -166,7 +166,7 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
                     <TableCell>
                       {evaluation ? getCategoryBadge(evaluation.category) : <span className="text-slate-400">-</span>}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       {isComplete ? (
                         <span className="inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Lengkap</span>
                       ) : (

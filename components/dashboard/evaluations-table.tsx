@@ -114,7 +114,7 @@ export function EvaluationsTable({
             <TableHeader>
               <TableRow className="bg-slate-50 hover:bg-slate-50">
                 <TableHead className="font-bold text-slate-700">Nama Guru</TableHead>
-                <TableHead className="font-bold text-slate-700">Evaluator</TableHead>
+                <TableHead className="font-bold text-slate-700 hidden sm:table-cell">Evaluator</TableHead>
                 <TableHead className="font-bold text-slate-700">Nilai Akhir</TableHead>
                 <TableHead className="font-bold text-slate-700">Kategori</TableHead>
                 <TableHead className="w-[50px] font-bold text-slate-700"></TableHead>
@@ -132,7 +132,7 @@ export function EvaluationsTable({
                   <TableCell className="font-semibold text-slate-900">
                     {evaluation.teacher.name}
                   </TableCell>
-                  <TableCell className="text-slate-500">
+                  <TableCell className="text-slate-500 hidden sm:table-cell">
                     {evaluation.evaluator.name}
                   </TableCell>
                   <TableCell>

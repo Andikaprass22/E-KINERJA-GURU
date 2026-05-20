@@ -37,7 +37,7 @@ async function ProfilePage() {
         <p className="text-sm text-slate-500 mt-1">Kelola informasi akun dan keamanan</p>
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 p-8 text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 p-5 sm:p-6 lg:p-8 text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white blur-3xl" />
           <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-white blur-3xl" />
@@ -54,7 +54,7 @@ async function ProfilePage() {
           </div>
 
           <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-1">{user.name}</h1>
+            <h1 className="text-xl sm:text-2xl font-bold mb-1">{user.name}</h1>
             <p className="text-indigo-200 text-sm mb-3">@{user.username}</p>
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1 text-xs font-bold bg-white/20 px-3 py-1 rounded-full">

@@ -62,12 +62,15 @@ export function AdminStatsCard({
   color,
   bgColor,
 }: AdminStatsCardProps) {
+  // Extract border color from bgColor (e.g., "bg-blue-50" -> "border-l-blue-500")
+  const borderColor = bgColor.replace("bg-", "border-l-").replace("-50", "-500");
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group"
+      className={`bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 ${borderColor} shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5`}
     >
       <div className="flex justify-between items-start">
         <div>

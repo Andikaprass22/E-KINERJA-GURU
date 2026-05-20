@@ -241,7 +241,7 @@ export default function PrincipalEvaluationsPage() {
                 Belum ada evaluasi pada semester ini
               </div>
             ) : (
-              <div className="rounded-xl border border-slate-100 overflow-hidden">
+              <div className="rounded-xl border border-slate-100 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-50 hover:bg-slate-50">
