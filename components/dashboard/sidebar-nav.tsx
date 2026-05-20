@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Calendar, 
-  Star, 
+import {
+  LayoutDashboard,
+  Users,
+  Calendar,
+  Star,
   Archive,
-  User
+  User,
+  FileCheck
 } from "lucide-react";
 
 interface SidebarNavProps {
@@ -22,6 +23,7 @@ const menuItems = {
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/users", label: "Manajemen Pengguna", icon: Users },
     { href: "/admin/semesters", label: "Semester", icon: Calendar },
+    { href: "/admin/submissions", label: "Progress Upload", icon: FileCheck },
     { href: "/admin/evaluations", label: "Evaluasi", icon: Star },
     { href: "/admin/archive", label: "Arsip", icon: Archive },
   ],

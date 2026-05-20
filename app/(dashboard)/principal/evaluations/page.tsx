@@ -11,28 +11,41 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Star, ArrowLeft } from "lucide-react";
-import { EvaluationsTable } from "@/components/dashboard/evaluations-table";
-import { EvaluationForm } from "@/components/dashboard/evaluation-form";
+import { Star, Pencil, History } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   getEvaluationsBySemester,
-  upsertEvaluation,
-  deleteEvaluation,
   getEvaluationStats,
+  reviseEvaluation,
 } from "@/lib/actions/evaluations";
+import { EvaluationForm } from "@/components/dashboard/evaluation-form";
+import { EvaluationHistory } from "@/components/dashboard/evaluation-history";
 import type { EvaluationCategory, DocumentType } from "@/lib/types";
-
-type Scores = Record<DocumentType, number>;
 
 interface EvaluationRow {
   id: string;
   teacherId: string;
   teacher: { id: string; name: string; username: string };
-  evaluator: { id: string; name: string };
+  evaluator: { id: string; name: string; role: string };
   scores: Record<string, number>;
   finalScore: number;
   category: EvaluationCategory;
   updatedAt: Date;
+  histories?: { changedBy: { id: string; name: string } }[];
 }
 
 interface Semester {
@@ -41,27 +54,58 @@ interface Semester {
   isActive: boolean;
 }
 
-interface Teacher {
-  id: string;
-  name: string;
-  username: string;
-}
-
 interface EvaluationStats {
   totalTeachers: number;
   evaluated: number;
   distribution: Record<EvaluationCategory, number>;
 }
 
-export default function EvaluationsPage() {
+function CategoryBadge({ category }: { category: EvaluationCategory }) {
+  const variants: Record<EvaluationCategory, "default" | "secondary" | "destructive" | "outline"> = {
+    A: "default",
+    B: "secondary",
+    C: "outline",
+    D: "destructive",
+  };
+  const labels: Record<EvaluationCategory, string> = {
+    A: "Sangat Baik",
+    B: "Baik",
+    C: "Cukup",
+    D: "Kurang",
+  };
+  return (
+    <Badge variant={variants[category]}>
+      {category} - {labels[category]}
+    </Badge>
+  );
+}
+
+function StarRating({ score }: { score: number }) {
+  return (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <Star
+          key={i}
+          className={`h-3 w-3 ${
+            i <= Math.round(score)
+              ? "fill-yellow-400 text-yellow-400"
+              : "text-gray-300"
+          }`}
+        />
+      ))}
+      <span className="ml-1 text-sm font-medium">{score.toFixed(2)}</span>
+    </div>
+  );
+}
+
+export default function PrincipalEvaluationsPage() {
   const [semesters, setSemesters] = useState<Semester[]>([]);
   const [selectedSemester, setSelectedSemester] = useState("");
   const [evaluations, setEvaluations] = useState<EvaluationRow[]>([]);
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [stats, setStats] = useState<EvaluationStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editingEvaluation, setEditingEvaluation] = useState<EvaluationRow | null>(null);
+  const [revisingEvaluation, setRevisingEvaluation] = useState<EvaluationRow | null>(null);
+  const [historyEvaluationId, setHistoryEvaluationId] = useState<string | null>(null);
 
   const loadSemesters = useCallback(async () => {
     try {
@@ -72,16 +116,6 @@ export default function EvaluationsPage() {
       if (active) setSelectedSemester(active.id);
     } catch (error) {
       console.error("Failed to load semesters:", error);
-    }
-  }, []);
-
-  const loadTeachers = useCallback(async () => {
-    try {
-      const res = await fetch("/api/users?role=TEACHER");
-      const data = await res.json();
-      setTeachers(data);
-    } catch (error) {
-      console.error("Failed to load teachers:", error);
     }
   }, []);
 
@@ -111,38 +145,20 @@ export default function EvaluationsPage() {
 
   useEffect(() => {
     loadSemesters();
-    loadTeachers();
-  }, [loadSemesters, loadTeachers]);
+  }, [loadSemesters]);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  const handleSubmit = async (teacherId: string, scores: Record<string, number>) => {
-    const result = await upsertEvaluation(teacherId, selectedSemester, scores);
+  const handleRevise = async (teacherId: string, scores: Record<string, number>) => {
+    if (!revisingEvaluation) return { success: false, error: "Tidak ada evaluasi yang dipilih" };
+    const result = await reviseEvaluation(revisingEvaluation.id, scores);
     if (result.success) {
-      setShowForm(false);
-      setEditingEvaluation(null);
+      setRevisingEvaluation(null);
       loadData();
     }
     return result;
-  };
-
-  const handleEdit = (evaluation: EvaluationRow) => {
-    setEditingEvaluation(evaluation);
-    setShowForm(true);
-  };
-
-  const handleDelete = async (evaluationId: string) => {
-    const result = await deleteEvaluation(evaluationId);
-    if (result.success) {
-      loadData();
-    }
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingEvaluation(null);
   };
 
   return (
@@ -151,42 +167,27 @@ export default function EvaluationsPage() {
         <div>
           <h1 className="text-2xl font-bold">Evaluasi Kinerja Guru</h1>
           <p className="text-muted-foreground">
-            Berikan penilaian untuk kinerja guru
+            Tinjau dan revisi evaluasi yang telah dibuat oleh Admin
           </p>
         </div>
-        {!showForm && (
-          <Button onClick={() => setShowForm(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Tambah Evaluasi
-          </Button>
-        )}
       </div>
 
-      {showForm ? (
+      {revisingEvaluation ? (
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={handleCancel}>
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <div>
-                <CardTitle>
-                  {editingEvaluation ? "Edit Evaluasi" : "Tambah Evaluasi Baru"}
-                </CardTitle>
-                <CardDescription>
-                  Berikan nilai 1-5 untuk 8 aspek penilaian
-                </CardDescription>
-              </div>
-            </div>
+            <CardTitle>Revisi Evaluasi</CardTitle>
+            <CardDescription>
+              Revisi nilai evaluasi untuk {revisingEvaluation.teacher.name}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <EvaluationForm
-              teachers={teachers}
+              teachers={[revisingEvaluation.teacher]}
               semesterId={selectedSemester}
-              initialScores={editingEvaluation?.scores}
-              initialTeacherId={editingEvaluation?.teacherId}
-              onSubmit={handleSubmit}
-              onCancel={handleCancel}
+              initialScores={revisingEvaluation.scores}
+              initialTeacherId={revisingEvaluation.teacherId}
+              onSubmit={handleRevise}
+              onCancel={() => setRevisingEvaluation(null)}
             />
           </CardContent>
         </Card>
@@ -271,7 +272,7 @@ export default function EvaluationsPage() {
             <CardHeader>
               <CardTitle>Daftar Evaluasi</CardTitle>
               <CardDescription>
-                Riwayat evaluasi kinerja guru pada semester ini
+                Klik &quot;Revisi&quot; untuk mengubah nilai evaluasi
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -279,17 +280,83 @@ export default function EvaluationsPage() {
                 <div className="text-center py-8 text-muted-foreground">
                   Memuat data...
                 </div>
+              ) : evaluations.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  Belum ada evaluasi pada semester ini
+                </div>
               ) : (
-                <EvaluationsTable
-                  evaluations={evaluations}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Nama Guru</TableHead>
+                        <TableHead>Evaluator</TableHead>
+                        <TableHead>Nilai Akhir</TableHead>
+                        <TableHead>Kategori</TableHead>
+                        <TableHead className="w-[100px]">Aksi</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {evaluations.map((evaluation, index) => (
+                        <motion.tr
+                          key={evaluation.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.03 }}
+                        >
+                          <TableCell className="font-medium">
+                            {evaluation.teacher.name}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {evaluation.evaluator.name}
+                          </TableCell>
+                          <TableCell>
+                            <StarRating score={evaluation.finalScore} />
+                          </TableCell>
+                          <TableCell>
+                            <CategoryBadge category={evaluation.category} />
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setRevisingEvaluation(evaluation)}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setHistoryEvaluationId(evaluation.id)}
+                              >
+                                <History className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </motion.tr>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               )}
             </CardContent>
           </Card>
         </>
       )}
+
+      <Dialog open={!!historyEvaluationId} onOpenChange={() => setHistoryEvaluationId(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
+          <DialogHeader className="pb-4 border-b">
+            <DialogTitle className="text-lg">Riwayat Revisi Evaluasi</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto py-4 px-1">
+            {historyEvaluationId && (
+              <EvaluationHistory evaluationId={historyEvaluationId} />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

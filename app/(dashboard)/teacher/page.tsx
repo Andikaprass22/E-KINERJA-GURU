@@ -1,25 +1,68 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { cacheTag } from "next/cache";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Upload, CheckCircle2, Clock } from "lucide-react";
+import { CheckCircle2, Clock, FileText } from "lucide-react";
+import { DocumentCard } from "@/components/dashboard/document-card";
+import { SubmissionProgress } from "@/components/dashboard/submission-progress";
+import type { DocumentType } from "@/lib/types";
+import { DocumentTypeLabel } from "@/lib/types";
 
-async function TeacherDashboard() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+const DOCUMENT_TYPES: DocumentType[] = [
+  "RPP",
+  "SYLLABUS",
+  "LEARNING_ACHIEVEMENT",
+  "TIME_ALLOCATION",
+  "KKTP",
+  "SEMESTER_PROGRAM",
+  "ANNUAL_PROGRAM",
+  "TEACHING_JOURNAL",
+];
 
-  if (!session || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN" && session.user.role !== "PRINCIPAL")) {
-    redirect("/dashboard");
-  }
+async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId: string; semesterId: string }) {
+  "use cache";
+  cacheTag(`submissions-${teacherId}`);
+
+  const [submissions, deadlines] = await Promise.all([
+    prisma.documentSubmission.findMany({
+      where: {
+        teacherId,
+        semesterId,
+      },
+    }),
+    prisma.documentDeadline.findMany({
+      where: {
+        semesterId,
+      },
+    }),
+  ]);
+
+  const submissionMap = new Map(
+    submissions.map((s) => [s.documentType, s])
+  );
+
+  const deadlineMap = new Map(
+    deadlines.map((d) => [d.documentType, d])
+  );
+
+  const completedCount = submissions.filter(
+    (s) => s.status === "COMPLETED" || s.status === "LATE"
+  ).length;
+
+  const nearestDeadline = deadlines
+    .filter((d) => d.deadline > new Date())
+    .sort((a, b) => a.deadline.getTime() - b.deadline.getTime())[0];
+
+  const daysRemaining = nearestDeadline
+    ? Math.ceil(
+        (nearestDeadline.deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      )
+    : null;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard Guru</h1>
-        <p className="text-muted-foreground">Selamat datang, {session.user.name}</p>
-      </div>
-
+    <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -27,7 +70,7 @@ async function TeacherDashboard() {
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0/8</div>
+            <div className="text-2xl font-bold">{completedCount}/8</div>
             <p className="text-xs text-muted-foreground">Dari 8 dokumen</p>
           </CardContent>
         </Card>
@@ -38,7 +81,7 @@ async function TeacherDashboard() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0%</div>
+            <div className="text-2xl font-bold">{Math.round((completedCount / 8) * 100)}%</div>
             <p className="text-xs text-muted-foreground">Kelengkapan dokumen</p>
           </CardContent>
         </Card>
@@ -49,65 +92,99 @@ async function TeacherDashboard() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">Hari tersisa</p>
+            <div className="text-2xl font-bold">
+              {daysRemaining !== null ? `${daysRemaining} hari` : "-"}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {nearestDeadline
+                ? DocumentTypeLabel[nearestDeadline.documentType as DocumentType]
+                : "Semua deadline terlewati"}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Nilai Kinerja</CardTitle>
+            <CardTitle className="text-sm font-medium">Dokumen Tertinggal</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">-</div>
-            <p className="text-xs text-muted-foreground">Belum dievaluasi</p>
+            <div className="text-2xl font-bold">
+              {submissions.filter((s) => s.status === "LATE").length}
+            </div>
+            <p className="text-xs text-muted-foreground">Melewati batas waktu</p>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Unggah Dokumen Administrasi</CardTitle>
-          <CardDescription>Kelola dan unggah dokumen administrasi pengajaran Anda</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            <a
-              href="/teacher"
-              className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-            >
-              <Upload className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium">Unggah Dokumen</p>
-                <p className="text-sm text-muted-foreground">Kelola 8 dokumen administrasi</p>
-              </div>
-            </a>
-            <a
-              href="/profile"
-              className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-            >
-              <FileText className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium">Profil Saya</p>
-                <p className="text-sm text-muted-foreground">Kelola informasi akun</p>
-              </div>
-            </a>
-          </div>
-        </CardContent>
-      </Card>
+      <SubmissionProgress completed={completedCount} total={8} />
 
       <Card>
         <CardHeader>
           <CardTitle>Status Dokumen</CardTitle>
-          <CardDescription>Daftar dokumen yang perlu diunggah</CardDescription>
+          <CardDescription>Daftar dokumen yang perlu diunggah untuk semester aktif</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            <p>Belum ada semester aktif. Silakan hubungi Admin.</p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {DOCUMENT_TYPES.map((docType) => {
+              const submission = submissionMap.get(docType);
+              const deadline = deadlineMap.get(docType);
+
+              return (
+                <DocumentCard
+                  key={docType}
+                  documentType={docType}
+                  submission={submission || null}
+                  deadline={deadline?.deadline || null}
+                  semesterId={semesterId}
+                />
+              );
+            })}
           </div>
         </CardContent>
       </Card>
+    </>
+  );
+}
+
+async function TeacherDashboard() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session || session.user.role !== "TEACHER") {
+    redirect("/login");
+  }
+
+  const activeSemester = await prisma.semester.findFirst({
+    where: { isActive: true },
+  });
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">Dashboard Guru</h1>
+        <p className="text-muted-foreground">Selamat datang, {session.user.name}</p>
+      </div>
+
+      {activeSemester ? (
+        <TeacherSubmissionsContent
+          teacherId={session.user.id}
+          semesterId={activeSemester.id}
+        />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>Status Dokumen</CardTitle>
+            <CardDescription>Daftar dokumen yang perlu diunggah</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-8 text-muted-foreground">
+              <p>Belum ada semester aktif. Silakan hubungi Admin.</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

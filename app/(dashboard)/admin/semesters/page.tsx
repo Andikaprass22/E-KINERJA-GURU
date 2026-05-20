@@ -19,7 +19,7 @@ async function SemestersListContent() {
   });
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 items-stretch md:grid-cols-2 lg:grid-cols-3">
       {semesters.map((semester) => (
         <SemesterCard key={semester.id} semester={semester} />
       ))}

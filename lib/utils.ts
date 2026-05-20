@@ -13,9 +13,9 @@ export function calculateFinalScore(scores: number[]): number {
 }
 
 export function getCategory(score: number): EvaluationCategory {
-  if (score >= 4.5) return "A";
-  if (score >= 3.5) return "B";
-  if (score >= 2.5) return "C";
+  if (score >= 4.56) return "A";
+  if (score >= 3.0) return "B";
+  if (score >= 2.0) return "C";
   return "D";
 }
 

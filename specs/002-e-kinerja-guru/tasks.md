@@ -124,14 +124,14 @@
 
 ### Implementasi US2
 
-- [ ] T039 [US2] Buat Uploadthing router di `lib/uploadthing.ts` — definisikan `createUploadthing()` dari `uploadthing/next`, buat `documentUploader` endpoint yang terima PDF/DOCX max 10MB, middleware validasi user sudah login via Better Auth session
-- [ ] T040 [US2] Buat route handler Uploadthing di `app/api/uploadthing/route.ts` — gunakan `createRouteHandler({ router: uploadRouter, config: { token: process.env.UPLOADTHING_TOKEN } })` dari `uploadthing/next`
-- [ ] T041 [P] [US2] Buat Server Action submission di `lib/actions/submissions.ts` — fungsi `saveSubmissionAction(fileUrl, fileKey, documentType)` simpan ke DB, `checkAndApplyLateSubmissions()` yang cek semua dokumen melewati deadline dan set status MISSING dengan nilai 0, call `updateTag('submissions-[teacherId]')` setelah mutasi
-- [ ] T042 [US2] Buat halaman utama guru di `app/(dashboard)/teacher/page.tsx` — async Server Component `'use cache'` + `cacheTag('submissions-[teacherId]')`, tampilkan grid 8 dokumen dengan status masing-masing dan progress summary
-- [ ] T043 [P] [US2] Buat komponen kartu dokumen di `components/dashboard/document-card.tsx` — tampilkan: nama dokumen (label Indonesia), batas waktu upload, status (Badge: Terkumpul/Belum/Terlambat), tombol upload jika belum ada atau belum lewat deadline, Framer Motion hover effect
-- [ ] T044 [P] [US2] Buat komponen progress bar di `components/dashboard/submission-progress.tsx` — shadcn Progress, tampilkan "X dari 8 dokumen terkumpul", animasi Framer Motion ketika nilai berubah
-- [ ] T045 [US2] Buat komponen Uploadthing di `components/forms/document-uploader.tsx` — gunakan `UploadButton` atau `UploadDropzone` dari `@uploadthing/react`, on-success call `saveSubmissionAction`, tampilkan loading state dan pesan sukses/error
-- [ ] T046 [US2] Buat background job check deadline di `app/api/cron/check-deadlines/route.ts` — Route Handler yang dipanggil periodik, jalankan `checkAndApplyLateSubmissions()`, update status MISSING untuk dokumen yang terlewat deadline
+- [X] T039 [US2] Buat Uploadthing router di `lib/uploadthing.ts` — definisikan `createUploadthing()` dari `uploadthing/next`, buat `documentUploader` endpoint yang terima PDF/DOCX max 10MB, middleware validasi user sudah login via Better Auth session
+- [X] T040 [US2] Buat route handler Uploadthing di `app/api/uploadthing/route.ts` — gunakan `createRouteHandler({ router: uploadRouter, config: { token: process.env.UPLOADTHING_TOKEN } })` dari `uploadthing/next`
+- [X] T041 [P] [US2] Buat Server Action submission di `lib/actions/submissions.ts` — fungsi `saveSubmissionAction(fileUrl, fileKey, documentType)` simpan ke DB, `checkAndApplyLateSubmissions()` yang cek semua dokumen melewati deadline dan set status MISSING dengan nilai 0, call `updateTag('submissions-[teacherId]')` setelah mutasi
+- [X] T042 [US2] Buat halaman utama guru di `app/(Dashboard)/teacher/page.tsx` — async Server Component `'use cache'` + `cacheTag('submissions-[teacherId]')`, tampilkan grid 8 dokumen dengan status masing-masing dan progress summary
+- [X] T043 [P] [US2] Buat komponen kartu dokumen di `components/dashboard/document-card.tsx` — tampilkan: nama dokumen (label Indonesia), batas waktu upload, status (Badge: Terkumpul/Belum/Terlambat), tombol upload jika belum ada atau belum lewat deadline, Framer Motion hover effect
+- [X] T044 [P] [US2] Buat komponen progress bar di `components/dashboard/submission-progress.tsx` — shadcn Progress, tampilkan "X dari 8 dokumen terkumpul", animasi Framer Motion ketika nilai berubah
+- [X] T045 [US2] Buat komponen Uploadthing di `components/forms/document-uploader.tsx` — gunakan `UploadButton` atau `UploadDropzone` dari `@uploadthing/react`, on-success call `saveSubmissionAction`, tampilkan loading state dan pesan sukses/error
+- [X] T046 [US2] Buat background job check deadline di `app/api/cron/check-deadlines/route.ts` — Route Handler yang dipanggil periodik, jalankan `checkAndApplyLateSubmissions()`, update status MISSING untuk dokumen yang terlewat deadline
 
 **Checkpoint**: User Story 2 selesai — Guru dapat upload dokumen, progress tampil, sistem otomatis beri nilai 0
 
@@ -145,14 +145,14 @@
 
 ### Implementasi US4
 
-- [ ] T047 [P] [US4] Buat Server Action evaluasi di `lib/actions/evaluations.ts` — fungsi `saveEvaluationAction(teacherId, semesterId, scores)` hitung `finalScore` dan `category` otomatis, simpan `EvaluationHistory` jika ada perubahan, call `updateTag('evaluations')` + `updateTag('eval-[teacherId]')`
-- [ ] T048 [US4] Buat halaman daftar guru untuk dievaluasi di `app/(dashboard)/admin/evaluations/page.tsx` — async Server Component `'use cache'` + `cacheTag('evaluations')`, tampilkan tabel semua guru dengan status evaluasi dan nilai akhir
-- [ ] T049 [US4] Buat halaman evaluasi guru di `app/(dashboard)/admin/evaluations/[teacherId]/page.tsx` — tampilkan 8 item penilaian dokumen dengan star rating per item, preview nilai akhir live, tombol simpan
-- [ ] T050 [P] [US4] Buat komponen star rating di `components/forms/star-rating.tsx` — interactive 1-5 bintang dengan Framer Motion scale animation on hover/select, nilai numerik tersembunyi untuk kalkulasi
-- [ ] T051 [P] [US4] Buat komponen kartu nilai akhir di `components/dashboard/score-summary.tsx` — tampilkan: nilai akhir (format desimal), kategori (A/B/C/D) dengan warna Badge, penjelasan kategori dalam Bahasa Indonesia
-- [ ] T052 [US4] Buat halaman evaluasi untuk Kepala Sekolah di `app/(dashboard)/principal/evaluations/page.tsx` — sama dengan admin tapi tampilkan evaluasi Admin dan opsi "Revisi" atau "Beri Evaluasi Mandiri"
-- [ ] T053 [US4] Buat halaman revisi evaluasi di `app/(dashboard)/principal/evaluations/[teacherId]/page.tsx` — preload nilai Admin, Kepala Sekolah bisa ubah nilai, simpan menyimpan EvaluationHistory dengan `changedById`
-- [ ] T054 [P] [US4] Buat komponen riwayat evaluasi di `components/dashboard/evaluation-history.tsx` — tampilkan log perubahan: siapa yang evaluasi, kapan, nilai sebelum dan sesudah
+- [X] T047 [P] [US4] Buat Server Action evaluasi di `lib/actions/evaluations.ts` — fungsi `upsertEvaluation(teacherId, semesterId, scores)` hitung `finalScore` dan `category` otomatis, `getEvaluationsBySemester`, `deleteEvaluation`, `getEvaluationStats`
+- [X] T048 [US4] Buat halaman evaluasi di `app/(dashboard)/admin/evaluations/page.tsx` — tampilkan tabel evaluasi, statistik distribusi kategori, filter semester, form evaluasi inline
+- [X] T049 [US4] Buat komponen form evaluasi di `components/dashboard/evaluation-form.tsx` — 8 aspek penilaian dengan star rating 1-5, preview nilai akhir live, kalkulasi kategori otomatis
+- [X] T050 [P] [US4] Buat komponen star rating di `components/dashboard/evaluation-form.tsx` — interactive 1-5 bintang dengan hover effect
+- [X] T051 [P] [US4] Buat komponen kartu nilai akhir di `components/dashboard/evaluation-form.tsx` — tampilkan: nilai akhir (format desimal), kategori (A/B/C/D) dengan warna Badge
+- [X] T052 [US4] Buat halaman evaluasi untuk Kepala Sekolah di `app/(dashboard)/principal/evaluations/page.tsx` — sama dengan admin tapi tampilkan evaluasi Admin dan opsi "Revisi" atau "Beri Evaluasi Mandiri"
+- [X] T053 [US4] Buat halaman revisi evaluasi di `app/(dashboard)/principal/evaluations/[teacherId]/page.tsx` — preload nilai Admin, Kepala Sekolah bisa ubah nilai, simpan menyimpan EvaluationHistory dengan `changedById`
+- [X] T054 [P] [US4] Buat komponen riwayat evaluasi di `components/dashboard/evaluation-history.tsx` — tampilkan log perubahan: siapa yang evaluasi, kapan, nilai sebelum dan sesudah
 
 **Checkpoint**: User Story 4 selesai — Sistem evaluasi bintang berfungsi penuh dengan kalkulasi otomatis
 
@@ -166,14 +166,14 @@
 
 ### Implementasi US5
 
-- [ ] T055 [P] [US5] Buat Server Action statistik di `lib/actions/stats.ts` — fungsi `getDashboardStats(semesterId)`: hitung total guru, persentase submission, rata-rata nilai evaluasi. Gunakan Prisma aggregate queries
-- [ ] T056 [US5] Buat dashboard Admin di `app/(dashboard)/admin/page.tsx` — async Server Component `'use cache'` + `cacheTag('stats')`, render grid statistik: total guru, % dokumen terkumpul, jumlah guru belum lengkap, ringkasan evaluasi
-- [ ] T057 [P] [US5] Buat komponen kartu statistik di `components/dashboard/stats-card.tsx` — shadcn Card dengan ikon, angka besar, label, warna berbeda per metrik, Framer Motion count-up animation
-- [ ] T058 [P] [US5] Buat komponen tabel monitoring guru di `components/dashboard/teacher-monitoring-table.tsx` — tampilkan nama guru, jumlah dokumen terkumpul (X/8), nilai evaluasi, status (Badge), filter per semester
-- [ ] T059 [US5] Buat dashboard Kepala Sekolah di `app/(dashboard)/principal/page.tsx` — identik dengan Admin tapi tanpa akses ke fungsi manajemen sistem, `'use cache'` + `cacheTag('stats')`
-- [ ] T060 [P] [US5] Buat komponen selector semester di `components/dashboard/semester-selector.tsx` — dropdown pilih semester termasuk arsip, trigger revalidasi tampilan saat berubah (client component)
-- [ ] T061 [US5] Buat halaman arsip laporan Admin di `app/(dashboard)/admin/archive/page.tsx` — filter per semester, tampilkan data historis read-only: submission dan evaluasi
-- [ ] T062 [US5] Buat halaman arsip laporan Kepala Sekolah di `app/(dashboard)/principal/archive/page.tsx` — identik dengan arsip Admin, read-only
+- [X] T055 [P] [US5] Buat Server Action statistik di `lib/actions/stats.ts` — fungsi `getDashboardStats(semesterId)`: hitung total guru, persentase submission, rata-rata nilai evaluasi. Gunakan Prisma aggregate queries
+- [X] T056 [US5] Buat dashboard Admin di `app/(dashboard)/admin/page.tsx` — async Server Component `'use cache'` + `cacheTag('stats')`, render grid statistik: total guru, % dokumen terkumpul, jumlah guru belum lengkap, ringkasan evaluasi
+- [X] T057 [P] [US5] Buat komponen kartu statistik di `components/dashboard/stats-card.tsx` — shadcn Card dengan ikon, angka besar, label, warna berbeda per metrik, Framer Motion count-up animation
+- [X] T058 [P] [US5] Buat komponen tabel monitoring guru di `components/dashboard/teacher-monitoring-table.tsx` — tampilkan nama guru, jumlah dokumen terkumpul (X/8), nilai evaluasi, status (Badge), filter per semester
+- [X] T059 [US5] Buat dashboard Kepala Sekolah di `app/(dashboard)/principal/page.tsx` — identik dengan Admin tapi tanpa akses ke fungsi manajemen sistem, `'use cache'` + `cacheTag('stats')`
+- [X] T060 [P] [US5] Buat komponen selector semester di `components/dashboard/semester-selector.tsx` — dropdown pilih semester termasuk arsip, trigger revalidasi tampilan saat berubah (client component)
+- [X] T061 [US5] Buat halaman arsip laporan Admin di `app/(dashboard)/admin/archive/page.tsx` — filter per semester, tampilkan data historis read-only: submission dan evaluasi
+- [X] T062 [US5] Buat halaman arsip laporan Kepala Sekolah di `app/(dashboard)/principal/archive/page.tsx` — identik dengan arsip Admin, read-only
 
 **Checkpoint**: User Story 5 selesai — Dashboard monitoring real-time berfungsi
 
@@ -183,13 +183,13 @@
 
 **Tujuan**: UX refinement, error handling, dan konsistensi antarmuka
 
-- [ ] T063 [P] Buat komponen error boundary global di `app/error.tsx` dan `app/not-found.tsx` — pesan error dan 404 dalam Bahasa Indonesia, tombol kembali ke dashboard
-- [ ] T064 [P] Buat loading skeleton untuk semua halaman data-heavy di `app/(dashboard)/admin/loading.tsx`, `app/(dashboard)/principal/loading.tsx`, `app/(dashboard)/teacher/loading.tsx` — gunakan shadcn Skeleton
-- [ ] T065 [P] Tambahkan Framer Motion page transition di `app/(dashboard)/layout.tsx` — `AnimatePresence` + `motion.div` dengan `initial`, `animate`, `exit` props untuk smooth navigasi antar halaman
-- [ ] T066 [P] Implementasi toast notifications di `components/providers.tsx` — tambahkan `Toaster` dari shadcn untuk feedback aksi (upload berhasil, simpan evaluasi, dll.)
-- [ ] T067 Pastikan semua teks antarmuka dalam Bahasa Indonesia — review semua file komponen dan pastikan tidak ada teks Inggris yang tertampil ke user
-- [ ] T068 [P] Optimasi caching — audit semua Server Components, pastikan `'use cache'` + `cacheTag()` diimplementasi konsisten, verifikasi `updateTag`/`revalidateTag` dipanggil setelah setiap mutasi
-- [ ] T069 Jalankan `bun run build` untuk validasi tidak ada type errors atau build failures, perbaiki semua error yang muncul
+- [X] T063 [P] Buat komponen error boundary global di `app/error.tsx` dan `app/not-found.tsx` — pesan error dan 404 dalam Bahasa Indonesia, tombol kembali ke dashboard
+- [X] T064 [P] Buat loading skeleton untuk semua halaman data-heavy di `app/(dashboard)/admin/loading.tsx`, `app/(dashboard)/principal/loading.tsx`, `app/(dashboard)/teacher/loading.tsx` — gunakan shadcn Skeleton
+- [X] T065 [P] Tambahkan Framer Motion page transition di `app/(dashboard)/layout.tsx` — `AnimatePresence` + `motion.div` dengan `initial`, `animate`, `exit` props untuk smooth navigasi antar halaman
+- [X] T066 [P] Implementasi toast notifications di `components/providers.tsx` — tambahkan `Toaster` dari shadcn untuk feedback aksi (upload berhasil, simpan evaluasi, dll.)
+- [X] T067 Pastikan semua teks antarmuka dalam Bahasa Indonesia — review semua file komponen dan pastikan tidak ada teks Inggris yang tertampil ke user
+- [X] T068 [P] Optimasi caching — audit semua Server Components, pastikan `'use cache'` + `cacheTag()` diimplementasi konsisten, verifikasi `updateTag`/`revalidateTag` dipanggil setelah setiap mutasi
+- [X] T069 Jalankan `bun run build` untuk validasi tidak ada type errors atau build failures, perbaiki semua error yang muncul
 
 ---
 

@@ -5,152 +5,127 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 mb-6 shadow-lg">
-              <BookOpen className="h-10 w-10 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="w-full px-6 lg:px-10 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+              <BookOpen className="h-5 w-5 text-white" />
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              E-KINERJA GURU
-            </h1>
-            <p className="text-xl text-gray-600 mb-2">
-              SD N 1 Pancor
-            </p>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Sistem manajemen kinerja dan administrasi guru yang modern, efisien, dan terintegrasi
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16">
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-3">
-                  <FileText className="h-6 w-6 text-blue-600" />
-                </div>
-                <CardTitle>Manajemen Dokumen</CardTitle>
-                <CardDescription>
-                  Kelola 8 jenis dokumen administrasi pengajaran dengan mudah dan terstruktur
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mb-3">
-                  <Users className="h-6 w-6 text-green-600" />
-                </div>
-                <CardTitle>Multi-Role Access</CardTitle>
-                <CardDescription>
-                  Akses berbeda untuk Admin, Kepala Sekolah, dan Guru sesuai kebutuhan
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center mb-3">
-                  <BarChart3 className="h-6 w-6 text-purple-600" />
-                </div>
-                <CardTitle>Evaluasi Kinerja</CardTitle>
-                <CardDescription>
-                  Sistem penilaian kinerja guru dengan skala bintang dan kategorisasi otomatis
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center mb-3">
-                  <Clock className="h-6 w-6 text-orange-600" />
-                </div>
-                <CardTitle>Batas Waktu Dokumen</CardTitle>
-                <CardDescription>
-                  Pengaturan deadline per dokumen dengan monitoring kepatuhan otomatis
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center mb-3">
-                  <Shield className="h-6 w-6 text-red-600" />
-                </div>
-                <CardTitle>Keamanan Terjamin</CardTitle>
-                <CardDescription>
-                  Sistem autentikasi modern dengan proteksi role-based dan data terenkripsi
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="border-2 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center mb-3">
-                  <Award className="h-6 w-6 text-indigo-600" />
-                </div>
-                <CardTitle>Arsip Semester</CardTitle>
-                <CardDescription>
-                  Penyimpanan data berbasis semester dengan akses arsip yang mudah
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Fitur Unggulan
-            </h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-gray-900">Upload Dokumen Mudah</p>
-                  <p className="text-sm text-gray-600">Unggah 8 jenis dokumen dengan format yang didukung</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-gray-900">Monitoring Real-time</p>
-                  <p className="text-sm text-gray-600">Pantau progress dan status dokumen secara langsung</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-gray-900">Evaluasi Otomatis</p>
-                  <p className="text-sm text-gray-600">Kalkulasi nilai dan kategorisasi otomatis</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-gray-900">Laporan Lengkap</p>
-                  <p className="text-sm text-gray-600">Akses arsip dan laporan per semester</p>
-                </div>
-              </div>
+            <div>
+              <h1 className="text-sm font-bold text-gray-900 leading-tight">E-KINERJA GURU</h1>
+              <p className="text-xs text-gray-500">SD N 1 Pancor</p>
             </div>
           </div>
+          <Button asChild size="sm">
+            <Link href="/login">Masuk</Link>
+          </Button>
+        </div>
+      </header>
 
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Siap Menggunakan Sistem?
+      <section className="w-full px-6 lg:px-10 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+              Sistem Informasi Kinerja Guru
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+              Kelola Kinerja Guru
+              <span className="text-blue-600"> Lebih Efisien</span>
             </h2>
-            <p className="text-gray-600 mb-6">
-              Login untuk mengakses dashboard dan mulai mengelola kinerja guru
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              Platform manajemen administrasi dan evaluasi kinerja guru yang modern, terstruktur, dan mudah digunakan untuk SD N 1 Pancor.
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-3">
               <Button asChild size="lg" className="gap-2">
                 <Link href="/login">
-                  Login ke Dashboard
+                  Masuk ke Dashboard
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
             </div>
           </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-3 items-start text-left">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-2">
+                  <FileText className="h-5 w-5 text-blue-600" />
+                </div>
+                <CardTitle className="text-sm">Dokumen</CardTitle>
+                <CardDescription className="text-xs">Kelola 8 jenis dokumen pengajaran</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-3 items-start text-left">
+                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center mb-2">
+                  <Users className="h-5 w-5 text-green-600" />
+                </div>
+                <CardTitle className="text-sm">Multi-Role</CardTitle>
+                <CardDescription className="text-xs">Admin, Kepala Sekolah, Guru</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-3 items-start text-left">
+                <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center mb-2">
+                  <BarChart3 className="h-5 w-5 text-purple-600" />
+                </div>
+                <CardTitle className="text-sm">Evaluasi</CardTitle>
+                <CardDescription className="text-xs">Penilaian kinerja bintang 1-5</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="border-0 shadow-sm bg-white">
+              <CardHeader className="pb-3 items-start text-left">
+                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center mb-2">
+                  <Award className="h-5 w-5 text-orange-600" />
+                </div>
+                <CardTitle className="text-sm">Kategori</CardTitle>
+                <CardDescription className="text-xs">Kalkulasi otomatis A-D</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="w-full px-6 lg:px-10 py-16 bg-white">
+        <div className="mb-10">
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">Fitur Utama</h3>
+          <p className="text-gray-500">Semua yang Anda butuhkan untuk mengelola kinerja guru</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { icon: FileText, color: "blue", title: "Upload Dokumen", desc: "Unggah 8 jenis dokumen administrasi dengan format PDF dan Word" },
+            { icon: Clock, color: "orange", title: "Deadline per Dokumen", desc: "Atur batas waktu per dokumen per semester dengan notifikasi otomatis" },
+            { icon: BarChart3, color: "purple", title: "Dashboard Statistik", desc: "Pantau persentase kelengkapan dokumen dan rata-rata evaluasi" },
+            { icon: Shield, color: "red", title: "Keamanan Role-Based", desc: "Akses terpisah untuk Admin, Kepala Sekolah, dan Guru" },
+            { icon: Award, color: "green", title: "Evaluasi Bintang", desc: "Penilaian 8 aspek dengan skala 1-5 dan kategori A-D" },
+            { icon: Users, color: "indigo", title: "Monitoring Guru", desc: "Pantau progress upload dan evaluasi setiap guru secara real-time" },
+          ].map((item, i) => (
+            <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors">
+              <div className={`w-10 h-10 rounded-lg bg-${item.color}-50 flex items-center justify-center shrink-0`}>
+                <item.icon className={`h-5 w-5 text-${item.color}-600`} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 text-sm mb-1">{item.title}</h4>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="w-full px-6 lg:px-10 py-6 border-t bg-white">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+              <BookOpen className="h-3 w-3 text-white" />
+            </div>
+            <span className="text-xs text-gray-500">E-KINERJA GURU &mdash; SD N 1 Pancor</span>
+          </div>
+          <p className="text-xs text-gray-400">Sistem Manajemen Kinerja Guru</p>
+        </div>
+      </footer>
     </div>
   );
 }

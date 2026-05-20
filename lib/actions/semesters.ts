@@ -119,3 +119,37 @@ export async function updateDeadlineAction(formData: FormData) {
     return { success: false, error: "Gagal mengupdate deadline" };
   }
 }
+
+export async function deleteSemesterAction(semesterId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session || session.user.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const semester = await prisma.semester.findUnique({
+      where: { id: semesterId },
+    });
+
+    if (!semester) {
+      return { success: false, error: "Semester tidak ditemukan" };
+    }
+
+    if (semester.isActive) {
+      return { success: false, error: "Tidak bisa menghapus semester yang sedang aktif" };
+    }
+
+    await prisma.semester.delete({
+      where: { id: semesterId },
+    });
+
+    revalidateTag("semesters", "max");
+    return { success: true };
+  } catch (error) {
+    console.error("Delete semester error:", error);
+    return { success: false, error: "Gagal menghapus semester" };
+  }
+}
