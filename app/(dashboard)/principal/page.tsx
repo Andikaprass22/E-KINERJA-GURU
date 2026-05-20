@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FileText, Star, BarChart3 } from "lucide-react";
-import { StatsCard } from "@/components/dashboard/stats-card";
+import { AdminStatsCard } from "@/components/dashboard/admin-stats-card";
+import { AdminDonutChart } from "@/components/dashboard/admin-donut-chart";
+import { AdminMonitoringTable } from "@/components/dashboard/admin-monitoring-table";
 import { SemesterSelector } from "@/components/dashboard/semester-selector";
-import { TeacherMonitoringTable } from "@/components/dashboard/teacher-monitoring-table";
 import { getDashboardStats, type DashboardStats } from "@/lib/actions/stats";
+import Link from "next/link";
 
 export default function PrincipalDashboard() {
   const [selectedSemester, setSelectedSemester] = useState("");
@@ -30,123 +31,104 @@ export default function PrincipalDashboard() {
   }, [loadStats]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Dashboard Kepala Sekolah</h1>
-          <p className="text-muted-foreground">
+          <h2 className="text-lg font-semibold text-slate-900">Dashboard Kepala Sekolah</h2>
+          <p className="text-sm text-slate-500 mt-1">
             {stats?.activeSemester
               ? `Semester: ${stats.activeSemester.name}`
-              : "Tidak ada semester aktif"}
+              : "Pantau ringkasan kinerja dan kelengkapan dokumen guru."}
           </p>
         </div>
         <SemesterSelector value={selectedSemester} onChange={setSelectedSemester} />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatsCard
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <AdminStatsCard
           title="Total Guru"
           value={stats?.totalTeachers || 0}
-          description="Guru terdaftar"
+          subtitle="Guru terdaftar"
           icon={Users}
+          color="text-blue-600"
+          bgColor="bg-blue-50"
         />
-        <StatsCard
+        <AdminStatsCard
           title="Dokumen Terkumpul"
           value={stats?.documentPercentage || 0}
           suffix="%"
-          description="Kelengkapan dokumen"
+          subtitle="Kelengkapan dokumen"
           icon={FileText}
-          variant={
-            (stats?.documentPercentage || 0) >= 80
-              ? "success"
-              : (stats?.documentPercentage || 0) >= 50
-              ? "warning"
-              : "danger"
-          }
+          color="text-amber-500"
+          bgColor="bg-amber-50"
         />
-        <StatsCard
+        <AdminStatsCard
           title="Rata-rata Nilai"
           value={stats?.averageScore || 0}
-          description="Skala 1-5"
+          subtitle="Skala 1-5"
           icon={Star}
+          color="text-emerald-500"
+          bgColor="bg-emerald-50"
         />
-        <StatsCard
+        <AdminStatsCard
           title="Evaluasi Selesai"
           value={stats?.evaluatedTeachers || 0}
-          description={`${stats?.totalTeachers || 0} guru total`}
+          subtitle={`${stats?.totalTeachers || 0} guru total`}
           icon={BarChart3}
+          color="text-indigo-500"
+          bgColor="bg-indigo-50"
         />
       </div>
 
-      {stats && stats.categoryDistribution && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Distribusi Kategori</CardTitle>
-            <CardDescription>Hasil evaluasi berdasarkan kategori</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-4">
-              {(["A", "B", "C", "D"] as const).map((cat) => (
-                <div key={cat} className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold">{stats.categoryDistribution[cat]}</div>
-                  <div className="text-sm text-muted-foreground">
-                    Kategori {cat}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Monitoring Guru</CardTitle>
-          <CardDescription>
-            Pantau kelengkapan dokumen dan evaluasi kinerja guru
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {selectedSemester ? (
-            <TeacherMonitoringTable semesterId={selectedSemester} />
-          ) : (
-            <div className="text-center py-8 text-muted-foreground">
-              Pilih semester untuk melihat data monitoring
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Aksi Cepat</CardTitle>
-          <CardDescription>Monitoring dan evaluasi kinerja guru</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            <a
-              href="/principal/evaluations"
-              className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-            >
-              <Star className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium">Evaluasi Kinerja</p>
-                <p className="text-sm text-muted-foreground">Lihat dan revisi penilaian guru</p>
-              </div>
-            </a>
-            <a
-              href="/principal/archive"
-              className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-            >
-              <BarChart3 className="h-5 w-5 text-primary" />
-              <div>
-                <p className="font-medium">Arsip Laporan</p>
-                <p className="text-sm text-muted-foreground">Lihat data historis</p>
-              </div>
-            </a>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col hover:shadow-md transition-shadow">
+          <div className="mb-6">
+            <h3 className="text-base font-bold text-slate-900">Distribusi Kategori</h3>
+            <p className="text-sm text-slate-500 mt-0.5">Hasil evaluasi berdasarkan kategori</p>
           </div>
-        </CardContent>
-      </Card>
+          <AdminDonutChart
+            distribution={stats?.categoryDistribution || { A: 0, B: 0, C: 0, D: 0 }}
+            total={stats?.evaluatedTeachers || 0}
+          />
+        </div>
+
+        <div className="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm flex flex-col hover:shadow-md transition-shadow">
+          <div className="mb-6">
+            <h3 className="text-base font-bold text-slate-900">Aksi Cepat</h3>
+            <p className="text-sm text-slate-500 mt-0.5">Monitoring dan evaluasi kinerja guru</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 flex-1">
+            <Link
+              href="/principal/evaluations"
+              className="group p-4 rounded-xl border border-slate-100 hover:border-emerald-300 hover:bg-emerald-50/50 cursor-pointer transition-all duration-200 flex items-start gap-4 active:scale-[0.98]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 group-hover:bg-white group-hover:shadow-sm flex items-center justify-center shrink-0 transition-all duration-200">
+                <Star size={22} className="text-emerald-600 transition-colors group-hover:scale-110" />
+              </div>
+              <div className="flex-1 pt-1">
+                <h4 className="text-sm font-bold text-slate-800 group-hover:text-emerald-700 transition-colors">Evaluasi Kinerja</h4>
+                <p className="text-xs text-slate-500 mt-1">Lihat dan revisi penilaian</p>
+              </div>
+            </Link>
+            <Link
+              href="/principal/archive"
+              className="group p-4 rounded-xl border border-slate-100 hover:border-indigo-300 hover:bg-indigo-50/50 cursor-pointer transition-all duration-200 flex items-start gap-4 active:scale-[0.98]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-indigo-100 group-hover:bg-white group-hover:shadow-sm flex items-center justify-center shrink-0 transition-all duration-200">
+                <BarChart3 size={22} className="text-indigo-600 transition-colors group-hover:scale-110" />
+              </div>
+              <div className="flex-1 pt-1">
+                <h4 className="text-sm font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">Arsip Laporan</h4>
+                <p className="text-xs text-slate-500 mt-1">Data historis</p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {selectedSemester && (
+        <AdminMonitoringTable semesterId={selectedSemester} />
+      )}
     </div>
   );
 }

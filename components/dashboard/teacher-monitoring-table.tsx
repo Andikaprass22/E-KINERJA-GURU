@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -10,11 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { getTeacherSubmissionsOverview, type TeacherSubmissionRow } from "@/lib/actions/admin";
 import { getEvaluationsBySemester } from "@/lib/actions/evaluations";
-import { DocumentTypeLabel, type DocumentType, type EvaluationCategory } from "@/lib/types";
+import { type DocumentType, type EvaluationCategory } from "@/lib/types";
 
 interface TeacherMonitoringTableProps {
   semesterId: string;
@@ -72,11 +72,11 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
   };
 
   const getCategoryBadge = (category: EvaluationCategory) => {
-    const variants: Record<EvaluationCategory, "default" | "secondary" | "destructive" | "outline"> = {
-      A: "default",
-      B: "secondary",
-      C: "outline",
-      D: "destructive",
+    const colors: Record<EvaluationCategory, string> = {
+      A: "bg-emerald-100 text-emerald-700",
+      B: "bg-blue-100 text-blue-700",
+      C: "bg-amber-100 text-amber-700",
+      D: "bg-red-100 text-red-700",
     };
     const labels: Record<EvaluationCategory, string> = {
       A: "Sangat Baik",
@@ -84,87 +84,102 @@ export function TeacherMonitoringTable({ semesterId }: TeacherMonitoringTablePro
       C: "Cukup",
       D: "Kurang",
     };
-    return <Badge variant={variants[category]}>{labels[category]}</Badge>;
+    return (
+      <span className={`inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full ${colors[category]}`}>
+        {labels[category]}
+      </span>
+    );
   };
 
   if (isLoading) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        Memuat data monitoring...
-      </div>
+      <Card className="border-slate-100 shadow-sm">
+        <CardContent className="py-12 text-center text-slate-400">
+          Memuat data monitoring...
+        </CardContent>
+      </Card>
     );
   }
 
   if (submissions.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        Belum ada data guru
-      </div>
+      <Card className="border-slate-100 shadow-sm">
+        <CardContent className="py-12 text-center text-slate-400">
+          Belum ada data guru
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="rounded-md border overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="min-w-[150px]">Nama Guru</TableHead>
-            <TableHead className="min-w-[120px]">Dokumen</TableHead>
-            <TableHead className="min-w-[100px]">Progress</TableHead>
-            <TableHead className="min-w-[100px]">Nilai</TableHead>
-            <TableHead className="min-w-[100px]">Kategori</TableHead>
-            <TableHead className="min-w-[80px]">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {submissions.map((row, index) => {
-            const evaluation = getEvaluation(row.teacherId);
-            const percentage = Math.round((row.completedCount / 8) * 100);
-            const isComplete = row.completedCount === 8;
+    <Card className="border-slate-100 shadow-sm">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-sm font-medium text-slate-900">Data Guru</CardTitle>
+        <CardDescription className="text-sm text-slate-500">
+          {submissions.length} guru terdaftar
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50 hover:bg-slate-50">
+                <TableHead className="min-w-[150px] font-bold text-slate-700">Nama Guru</TableHead>
+                <TableHead className="min-w-[120px] font-bold text-slate-700">Dokumen</TableHead>
+                <TableHead className="min-w-[100px] font-bold text-slate-700">Progress</TableHead>
+                <TableHead className="min-w-[100px] font-bold text-slate-700">Nilai</TableHead>
+                <TableHead className="min-w-[100px] font-bold text-slate-700">Kategori</TableHead>
+                <TableHead className="min-w-[80px] font-bold text-slate-700">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {submissions.map((row, index) => {
+                const evaluation = getEvaluation(row.teacherId);
+                const percentage = Math.round((row.completedCount / 8) * 100);
+                const isComplete = row.completedCount === 8;
 
-            return (
-              <motion.tr
-                key={row.teacherId}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.03 }}
-              >
-                <TableCell className="font-medium">{row.teacherName}</TableCell>
-                <TableCell>
-                  {row.completedCount}/8
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Progress value={percentage} className="h-2 w-20" />
-                    <span className="text-xs text-muted-foreground">{percentage}%</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {evaluation ? (
-                    <span className="font-medium">{evaluation.finalScore.toFixed(2)}</span>
-                  ) : (
-                    <span className="text-muted-foreground">-</span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {evaluation ? (
-                    getCategoryBadge(evaluation.category)
-                  ) : (
-                    <span className="text-muted-foreground">-</span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {isComplete ? (
-                    <Badge variant="default">Lengkap</Badge>
-                  ) : (
-                    <Badge variant="outline">Belum</Badge>
-                  )}
-                </TableCell>
-              </motion.tr>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+                return (
+                  <motion.tr
+                    key={row.teacherId}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.03 }}
+                    className="hover:bg-slate-50"
+                  >
+                    <TableCell className="font-semibold text-slate-900">{row.teacherName}</TableCell>
+                    <TableCell>
+                      <span className="text-sm text-slate-600">{row.completedCount}/8</span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Progress value={percentage} className="h-2 w-20" />
+                        <span className="text-xs text-slate-500 font-medium">{percentage}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {evaluation ? (
+                        <span className="font-bold text-slate-900">{evaluation.finalScore.toFixed(2)}</span>
+                      ) : (
+                        <span className="text-slate-400">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {evaluation ? getCategoryBadge(evaluation.category) : <span className="text-slate-400">-</span>}
+                    </TableCell>
+                    <TableCell>
+                      {isComplete ? (
+                        <span className="inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Lengkap</span>
+                      ) : (
+                        <span className="inline-flex items-center text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700">Belum</span>
+                      )}
+                    </TableCell>
+                  </motion.tr>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

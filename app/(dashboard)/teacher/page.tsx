@@ -3,8 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { cacheTag } from "next/cache";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2, Clock, FileText } from "lucide-react";
+import { CheckCircle2, Clock, FileText, AlertCircle } from "lucide-react";
 import { DocumentCard } from "@/components/dashboard/document-card";
 import { SubmissionProgress } from "@/components/dashboard/submission-progress";
 import type { DocumentType } from "@/lib/types";
@@ -63,86 +62,92 @@ async function TeacherSubmissionsContent({ teacherId, semesterId }: { teacherId:
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Dokumen Terkumpul</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{completedCount}/8</div>
-            <p className="text-xs text-muted-foreground">Dari 8 dokumen</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Progress</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{Math.round((completedCount / 8) * 100)}%</div>
-            <p className="text-xs text-muted-foreground">Kelengkapan dokumen</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Deadline Terdekat</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {daysRemaining !== null ? `${daysRemaining} hari` : "-"}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1">
+              <p className="text-xs font-medium text-slate-500 mb-1">Dokumen Terkumpul</p>
+              <h3 className="text-2xl font-bold text-slate-900">{completedCount}/8</h3>
             </div>
-            <p className="text-xs text-muted-foreground">
-              {nearestDeadline
-                ? DocumentTypeLabel[nearestDeadline.documentType as DocumentType]
-                : "Semua deadline terlewati"}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Dokumen Tertinggal</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {submissions.filter((s) => s.status === "LATE").length}
+            <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <CheckCircle2 size={22} />
             </div>
-            <p className="text-xs text-muted-foreground">Melewati batas waktu</p>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="flex items-center text-xs font-medium text-slate-500">Dari 8 dokumen</div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1">
+              <p className="text-xs font-medium text-slate-500 mb-1">Progress</p>
+              <h3 className="text-2xl font-bold text-slate-900">{Math.round((completedCount / 8) * 100)}%</h3>
+            </div>
+            <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <FileText size={22} />
+            </div>
+          </div>
+          <div className="flex items-center text-xs font-medium text-slate-500">Kelengkapan dokumen</div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1">
+              <p className="text-xs font-medium text-slate-500 mb-1">Deadline Terdekat</p>
+              <h3 className="text-2xl font-bold text-slate-900">
+                {daysRemaining !== null ? `${daysRemaining} hari` : "-"}
+              </h3>
+            </div>
+            <div className="p-2.5 rounded-xl bg-amber-50 text-amber-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <Clock size={22} />
+            </div>
+          </div>
+          <div className="flex items-center text-xs font-medium text-slate-500">
+            {nearestDeadline
+              ? DocumentTypeLabel[nearestDeadline.documentType as DocumentType]
+              : "Semua deadline terlewati"}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1">
+              <p className="text-xs font-medium text-slate-500 mb-1">Dokumen Terlambat</p>
+              <h3 className="text-2xl font-bold text-slate-900">
+                {submissions.filter((s) => s.status === "LATE").length}
+              </h3>
+            </div>
+            <div className="p-2.5 rounded-xl bg-red-50 text-red-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <AlertCircle size={22} />
+            </div>
+          </div>
+          <div className="flex items-center text-xs font-medium text-slate-500">Melewati batas waktu</div>
+        </div>
       </div>
 
       <SubmissionProgress completed={completedCount} total={8} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Status Dokumen</CardTitle>
-          <CardDescription>Daftar dokumen yang perlu diunggah untuk semester aktif</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            {DOCUMENT_TYPES.map((docType) => {
-              const submission = submissionMap.get(docType);
-              const deadline = deadlineMap.get(docType);
+      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm">
+        <div className="mb-6">
+          <h3 className="text-base font-bold text-slate-900">Status Dokumen</h3>
+          <p className="text-sm text-slate-500 mt-0.5">Daftar dokumen yang perlu diunggah untuk semester aktif</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {DOCUMENT_TYPES.map((docType) => {
+            const submission = submissionMap.get(docType);
+            const deadline = deadlineMap.get(docType);
 
-              return (
-                <DocumentCard
-                  key={docType}
-                  documentType={docType}
-                  submission={submission || null}
-                  deadline={deadline?.deadline || null}
-                  semesterId={semesterId}
-                />
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+            return (
+              <DocumentCard
+                key={docType}
+                documentType={docType}
+                submission={submission || null}
+                deadline={deadline?.deadline || null}
+                semesterId={semesterId}
+              />
+            );
+          })}
+        </div>
+      </div>
     </>
   );
 }
@@ -161,10 +166,14 @@ async function TeacherDashboard() {
   });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard Guru</h1>
-        <p className="text-muted-foreground">Selamat datang, {session.user.name}</p>
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">Dashboard Guru</h2>
+          <p className="text-sm text-slate-500 mt-1">
+            Selamat datang, {session.user.name}
+          </p>
+        </div>
       </div>
 
       {activeSemester ? (
@@ -173,17 +182,11 @@ async function TeacherDashboard() {
           semesterId={activeSemester.id}
         />
       ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>Status Dokumen</CardTitle>
-            <CardDescription>Daftar dokumen yang perlu diunggah</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8 text-muted-foreground">
-              <p>Belum ada semester aktif. Silakan hubungi Admin.</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm text-center">
+          <AlertCircle className="h-12 w-12 mx-auto mb-4 text-slate-300" />
+          <h3 className="text-base font-bold text-slate-900 mb-1">Belum Ada Semester Aktif</h3>
+          <p className="text-sm text-slate-500">Silakan hubungi Admin untuk mengatur semester.</p>
+        </div>
       )}
     </div>
   );

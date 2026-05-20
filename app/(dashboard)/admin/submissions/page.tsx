@@ -2,7 +2,6 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileCheck } from "lucide-react";
 import { getTeacherSubmissionsOverview } from "@/lib/actions/admin";
 import { AdminSubmissionsTable } from "@/components/dashboard/admin-submissions-table";
@@ -12,7 +11,7 @@ async function SubmissionsContent({ semesterId }: { semesterId: string }) {
 
   if (!result.success || !result.data) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="text-center py-8 text-slate-400">
         Gagal memuat data
       </div>
     );
@@ -43,53 +42,41 @@ async function AdminSubmissionsPage() {
 
   if (!activeSemester) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-2xl font-bold">Progress Upload Guru</h1>
-          <p className="text-muted-foreground">
-            Pantau kelengkapan dokumen guru
-          </p>
+          <h2 className="text-lg font-semibold text-slate-900">Progress Upload Guru</h2>
+          <p className="text-sm text-slate-500 mt-1">Pantau kelengkapan dokumen guru</p>
         </div>
-        <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            Belum ada semester. Buat semester terlebih dahulu.
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm text-center">
+          <FileCheck className="h-12 w-12 mx-auto mb-4 text-slate-300" />
+          <h3 className="text-base font-bold text-slate-900 mb-1">Belum Ada Semester</h3>
+          <p className="text-sm text-slate-500">Buat semester terlebih dahulu.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Progress Upload Guru</h1>
-          <p className="text-muted-foreground">
+          <h2 className="text-lg font-semibold text-slate-900">Progress Upload Guru</h2>
+          <p className="text-sm text-slate-500 mt-1">
             Pantau kelengkapan dokumen - {activeSemester.name}
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-        <FileCheck className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">
-          <span className="text-green-600 font-medium">Hijau</span> = Selesai,{" "}
-          <span className="text-red-600 font-medium">Merah</span> = Terlambat,{" "}
-          <span className="text-gray-500 font-medium">Abu-abu</span> = Belum Unggah
+      <div className="flex items-center gap-2 p-3 bg-indigo-50 rounded-xl">
+        <FileCheck className="h-4 w-4 text-indigo-500" />
+        <span className="text-sm text-slate-600">
+          <span className="font-bold text-emerald-600">Hijau</span> = Selesai,{" "}
+          <span className="font-bold text-red-600">Merah</span> = Terlambat,{" "}
+          <span className="font-bold text-slate-500">Abu-abu</span> = Belum Unggah
         </span>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Daftar Guru</CardTitle>
-          <CardDescription>
-            Status 8 dokumen untuk setiap guru pada semester {activeSemester.name}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SubmissionsContent semesterId={activeSemester.id} />
-        </CardContent>
-      </Card>
+      <SubmissionsContent semesterId={activeSemester.id} />
     </div>
   );
 }

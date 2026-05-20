@@ -10,8 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Star, Loader2 } from "lucide-react";
 import { DocumentTypeLabel, type DocumentType, type EvaluationCategory } from "@/lib/types";
 
@@ -25,8 +23,6 @@ const DOCUMENT_TYPES: DocumentType[] = [
   "ANNUAL_PROGRAM",
   "TEACHING_JOURNAL",
 ];
-
-type Scores = Record<DocumentType, number>;
 
 interface Teacher {
   id: string;
@@ -66,13 +62,13 @@ function StarRatingInput({
           <Star
             className={`h-6 w-6 cursor-pointer transition-colors ${
               i <= (hover || value)
-                ? "fill-yellow-400 text-yellow-400"
-                : "text-gray-300 hover:text-yellow-200"
+                ? "fill-amber-400 text-amber-400"
+                : "text-slate-200 hover:text-amber-200"
             }`}
           />
         </button>
       ))}
-      <span className="ml-2 text-sm font-medium">{value}/5</span>
+      <span className="ml-2 text-sm font-medium text-slate-700">{value}/5</span>
     </div>
   );
 }
@@ -94,14 +90,14 @@ function getCategoryLabel(category: EvaluationCategory): string {
   return labels[category];
 }
 
-function getCategoryVariant(category: EvaluationCategory): "default" | "secondary" | "destructive" | "outline" {
-  const variants: Record<EvaluationCategory, "default" | "secondary" | "destructive" | "outline"> = {
-    A: "default",
-    B: "secondary",
-    C: "outline",
-    D: "destructive",
+function getCategoryColor(category: EvaluationCategory): string {
+  const colors: Record<EvaluationCategory, string> = {
+    A: "bg-emerald-100 text-emerald-700",
+    B: "bg-blue-100 text-blue-700",
+    C: "bg-amber-100 text-amber-700",
+    D: "bg-red-100 text-red-700",
   };
-  return variants[category];
+  return colors[category];
 }
 
 export function EvaluationForm({
@@ -150,19 +146,19 @@ export function EvaluationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
+        <div className="p-3 text-sm text-red-600 bg-red-50 rounded-xl border border-red-100">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="teacher">Guru</Label>
+        <Label className="text-sm font-semibold text-slate-700">Guru</Label>
         <Select
           value={teacherId}
           onValueChange={setTeacherId}
           disabled={!!initialTeacherId}
         >
-          <SelectTrigger>
+          <SelectTrigger className="rounded-xl border-slate-200">
             <SelectValue placeholder="Pilih guru" />
           </SelectTrigger>
           <SelectContent>
@@ -176,14 +172,14 @@ export function EvaluationForm({
       </div>
 
       <div className="space-y-4">
-        <Label>Aspek Penilaian</Label>
-        <div className="grid gap-4 md:grid-cols-2">
+        <Label className="text-sm font-semibold text-slate-700">Aspek Penilaian</Label>
+        <div className="grid gap-3 md:grid-cols-2">
           {DOCUMENT_TYPES.map((dt) => (
             <div
               key={dt}
-              className="flex items-center justify-between p-3 border rounded-lg"
+              className="flex items-center justify-between p-3 border border-slate-100 rounded-xl bg-white hover:border-slate-200 transition-colors"
             >
-              <span className="text-sm font-medium">{DocumentTypeLabel[dt]}</span>
+              <span className="text-sm font-medium text-slate-700">{DocumentTypeLabel[dt]}</span>
               <StarRatingInput
                 value={scores[dt]}
                 onChange={(v) => handleScoreChange(dt, v)}
@@ -193,31 +189,35 @@ export function EvaluationForm({
         </div>
       </div>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm">Hasil Penilaian</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">Nilai Akhir</p>
-              <p className="text-2xl font-bold">{finalScore.toFixed(2)}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Kategori</p>
-              <Badge variant={getCategoryVariant(category)} className="text-lg">
-                {category} - {getCategoryLabel(category)}
-              </Badge>
-            </div>
+      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Nilai Akhir</p>
+            <p className="text-2xl font-extrabold text-slate-900">{finalScore.toFixed(2)}</p>
           </div>
-        </CardContent>
-      </Card>
+          <div className="text-right">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Kategori</p>
+            <span className={`inline-flex items-center text-sm font-bold px-3 py-1 rounded-full ${getCategoryColor(category)}`}>
+              {category} - {getCategoryLabel(category)}
+            </span>
+          </div>
+        </div>
+      </div>
 
       <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+        >
           Batal
         </Button>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm"
+        >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {initialTeacherId ? "Perbarui" : "Simpan"} Evaluasi
         </Button>

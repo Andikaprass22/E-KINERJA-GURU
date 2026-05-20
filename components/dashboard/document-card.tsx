@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, Clock, CheckCircle2, AlertTriangle, Upload } from "lucide-react";
+import { FileText, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DocumentTypeLabel, type DocumentType, type SubmissionStatus } from "@/lib/types";
 import { DocumentUploader } from "@/components/forms/document-uploader";
 
@@ -25,24 +24,24 @@ function StatusBadge({ status }: { status: SubmissionStatus }) {
   switch (status) {
     case "COMPLETED":
       return (
-        <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
           <CheckCircle2 className="h-3 w-3" />
           Selesai
-        </Badge>
+        </span>
       );
     case "LATE":
       return (
-        <Badge variant="destructive">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
           <AlertTriangle className="h-3 w-3" />
           Terlambat
-        </Badge>
+        </span>
       );
     case "MISSING":
       return (
-        <Badge variant="secondary">
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
           <Clock className="h-3 w-3" />
           Belum Unggah
-        </Badge>
+        </span>
       );
   }
 }
@@ -71,50 +70,54 @@ export function DocumentCard({ documentType, submission, deadline, semesterId }:
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      className={`bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all ${
+        isPastDeadline && !isUploaded ? "border-red-200" : ""
+      }`}
     >
-      <Card className={isPastDeadline && !isUploaded ? "border-red-200 dark:border-red-900" : ""}>
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between gap-2 mb-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <FileText className="h-5 w-5 shrink-0 text-muted-foreground" />
-              <span className="font-medium text-sm truncate">
-                {DocumentTypeLabel[documentType]}
-              </span>
-            </div>
-            <StatusBadge status={status} />
-          </div>
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <FileText className="h-5 w-5 shrink-0 text-slate-400" />
+          <span className="font-semibold text-sm text-slate-900 truncate">
+            {DocumentTypeLabel[documentType]}
+          </span>
+        </div>
+        <StatusBadge status={status} />
+      </div>
 
-          {deadline && (
-            <div className={`flex items-center gap-1.5 text-xs mb-3 ${isPastDeadline ? "text-red-600" : "text-muted-foreground"}`}>
-              <Clock className="h-3 w-3" />
-              <span>
-                {isPastDeadline
-                  ? "Deadline terlewati"
-                  : `${daysRemaining} hari lagi`}
-              </span>
-              <span className="text-muted-foreground">({formatDeadline(deadline)})</span>
-            </div>
-          )}
+      {deadline && (
+        <div className={`flex items-center gap-1.5 text-xs mb-3 ${isPastDeadline ? "text-red-600" : "text-slate-500"}`}>
+          <Clock className="h-3 w-3" />
+          <span>
+            {isPastDeadline
+              ? "Deadline terlewati"
+              : `${daysRemaining} hari lagi`}
+          </span>
+          <span className="text-slate-400">({formatDeadline(deadline)})</span>
+        </div>
+      )}
 
-          {isUploaded && submission?.uploadedAt && (
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
-              <CheckCircle2 className="h-3 w-3 text-green-600" />
-              <span>Diunggah {new Intl.DateTimeFormat("id-ID", { year: "numeric", month: "long", day: "numeric" }).format(submission.uploadedAt)}</span>
-            </div>
-          )}
+      {isUploaded && submission?.uploadedAt && (
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3">
+          <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+          <span>Diunggah {new Intl.DateTimeFormat("id-ID", { year: "numeric", month: "long", day: "numeric" }).format(submission.uploadedAt)}</span>
+        </div>
+      )}
 
-          {isUploaded && submission?.fileUrl ? (
-            <Button variant="outline" size="sm" className="w-full" asChild>
-              <a href={submission.fileUrl} target="_blank" rel="noopener noreferrer">
-                <FileText className="mr-2 h-4 w-4" />
-                Lihat Dokumen
-              </a>
-            </Button>
-          ) : (
-            <DocumentUploader documentType={documentType} semesterId={semesterId} />
-          )}
-        </CardContent>
-      </Card>
+      {isUploaded && submission?.fileUrl ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full rounded-xl border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300 transition-colors"
+          asChild
+        >
+          <a href={submission.fileUrl} target="_blank" rel="noopener noreferrer">
+            <FileText className="mr-2 h-4 w-4" />
+            Lihat Dokumen
+          </a>
+        </Button>
+      ) : (
+        <DocumentUploader documentType={documentType} semesterId={semesterId} />
+      )}
     </motion.div>
   );
 }

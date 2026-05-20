@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 
-interface StatsCardProps {
+interface AdminStatsCardProps {
   title: string;
   value: number;
   suffix?: string;
-  description: string;
+  subtitle: string;
   icon: LucideIcon;
-  color?: string;
-  bgColor?: string;
+  color: string;
+  bgColor: string;
 }
 
 function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
@@ -53,15 +53,15 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
   );
 }
 
-export function StatsCard({
+export function AdminStatsCard({
   title,
   value,
   suffix = "",
-  description,
+  subtitle,
   icon: Icon,
-  color = "text-indigo-500",
-  bgColor = "bg-indigo-50",
-}: StatsCardProps) {
+  color,
+  bgColor,
+}: AdminStatsCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -69,23 +69,19 @@ export function StatsCard({
       transition={{ duration: 0.5 }}
       className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all group"
     >
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <p className="text-xs font-medium text-slate-500 mb-1">
-            {title}
-          </p>
-          <h3 className="text-2xl font-bold text-slate-900">
+      <div className="flex justify-between items-start">
+        <div>
+          <p className="text-sm font-medium text-slate-500 mb-1.5">{title}</p>
+          <h3 className="text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
             <AnimatedNumber value={value} suffix={suffix} />
           </h3>
         </div>
-        <div
-          className={`p-2.5 rounded-xl ${bgColor} ${color} group-hover:scale-110 transition-transform duration-300 shadow-sm`}
-        >
-          <Icon size={22} />
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${bgColor} group-hover:scale-110 transition-transform`}>
+          <Icon size={24} className={color} />
         </div>
       </div>
-      <div className="flex items-center text-xs font-medium text-slate-500">
-        {description}
+      <div className="mt-4 flex items-center text-xs font-medium text-slate-400">
+        <span>{subtitle}</span>
       </div>
     </motion.div>
   );

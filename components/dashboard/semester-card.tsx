@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Power, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -73,69 +71,71 @@ export function SemesterCard({ semester }: SemesterCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="h-full"
+      className={`bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-slate-200 transition-all flex flex-col h-full ${isExpired ? "opacity-60" : ""}`}
     >
-      <Card className={`h-full flex flex-col ${isExpired ? "opacity-60" : ""}`}>
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between gap-2">
-            <CardTitle className="text-base truncate">{semester.name}</CardTitle>
-            <Badge variant={semester.isActive ? "default" : "secondary"} className="shrink-0 text-xs">
-              {semester.isActive ? "Aktif" : "Arsip"}
-            </Badge>
-          </div>
-          <CardDescription className="flex items-center gap-1.5 text-xs">
-            <Calendar className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate">
-              {formatDate(semester.startDate)} - {formatDate(semester.endDate)}
-            </span>
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 flex flex-col justify-between">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
-            <Clock className="h-3.5 w-3.5" />
-            <span className={isExpired ? "text-red-600 font-medium" : ""}>
-              {isExpired ? "Sudah berakhir" : "Sedang berjalan"}
-            </span>
-          </div>
+      <div className="flex items-center justify-between gap-2 mb-3">
+        <h3 className="text-sm font-medium text-slate-900 truncate">{semester.name}</h3>
+        <span className={`shrink-0 text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+          semester.isActive
+            ? "bg-indigo-100 text-indigo-700"
+            : "bg-slate-100 text-slate-500"
+        }`}>
+          {semester.isActive ? "Aktif" : "Arsip"}
+        </span>
+      </div>
 
-          <div className="flex flex-wrap gap-2">
-            {!semester.isActive && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs"
-                onClick={handleActivate}
-                disabled={loading}
-              >
-                <Power className="mr-1.5 h-3.5 w-3.5" />
-                {loading ? "Memproses..." : "Aktifkan"}
-              </Button>
-            )}
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs"
-              asChild
-            >
-              <Link href={`/admin/semesters/${semester.id}/deadlines`}>
-                Atur Deadline
-              </Link>
-            </Button>
-            {!semester.isActive && (
-              <Button
-                variant="destructive"
-                size="sm"
-                className="h-8 text-xs"
-                onClick={handleDelete}
-                disabled={deleting}
-              >
-                <Trash2 className="mr-1.5 h-3.5 w-3.5" />
-                {deleting ? "Menghapus..." : "Hapus"}
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-4">
+        <Calendar className="h-3.5 w-3.5 shrink-0" />
+        <span className="truncate">
+          {formatDate(semester.startDate)} - {formatDate(semester.endDate)}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-4">
+        <Clock className="h-3.5 w-3.5" />
+        <span className={isExpired ? "text-red-600 font-medium" : ""}>
+          {isExpired ? "Sudah berakhir" : "Sedang berjalan"}
+        </span>
+      </div>
+
+      <div className="flex-1" />
+
+      <div className="flex flex-wrap gap-2">
+        {!semester.isActive && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs rounded-lg border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300"
+            onClick={handleActivate}
+            disabled={loading}
+          >
+            <Power className="mr-1.5 h-3.5 w-3.5" />
+            {loading ? "Memproses..." : "Aktifkan"}
+          </Button>
+        )}
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 text-xs rounded-lg border-slate-200 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-300"
+          asChild
+        >
+          <Link href={`/admin/semesters/${semester.id}/deadlines`}>
+            Atur Deadline
+          </Link>
+        </Button>
+        {!semester.isActive && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs rounded-lg border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            {deleting ? "Menghapus..." : "Hapus"}
+          </Button>
+        )}
+      </div>
     </motion.div>
   );
 }

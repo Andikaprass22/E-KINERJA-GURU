@@ -23,13 +23,16 @@ async function UsersListPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Kelola Pengguna</h1>
-          <p className="text-muted-foreground">Kelola akun guru dan staf sekolah</p>
+          <h2 className="text-lg font-semibold text-slate-900">Kelola Pengguna</h2>
+          <p className="text-sm text-slate-500 mt-1">Kelola akun guru dan staf sekolah</p>
         </div>
-        <Button asChild>
+        <Button
+          asChild
+          className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-sm"
+        >
           <Link href="/admin/users/new">
             <Plus className="mr-2 h-4 w-4" />
             Tambah Pengguna

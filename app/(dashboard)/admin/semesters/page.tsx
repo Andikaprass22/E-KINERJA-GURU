@@ -37,13 +37,16 @@ async function SemestersListPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Pengaturan Semester</h1>
-          <p className="text-muted-foreground">Kelola semester dan batas waktu dokumen</p>
+          <h2 className="text-lg font-semibold text-slate-900">Pengaturan Semester</h2>
+          <p className="text-sm text-slate-500 mt-1">Kelola semester dan batas waktu dokumen</p>
         </div>
-        <Button asChild>
+        <Button
+          asChild
+          className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-sm"
+        >
           <Link href="/admin/semesters/new">
             <Plus className="mr-2 h-4 w-4" />
             Tambah Semester

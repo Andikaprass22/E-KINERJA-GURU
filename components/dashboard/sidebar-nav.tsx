@@ -1,9 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
   Users,
@@ -11,8 +8,9 @@ import {
   Star,
   Archive,
   User,
-  FileCheck
+  FileCheck,
 } from "lucide-react";
+import { useSidebar } from "@/components/ui/sidebar";
 
 interface SidebarNavProps {
   userRole: "ADMIN" | "PRINCIPAL" | "TEACHER";
@@ -41,33 +39,50 @@ const menuItems = {
 export function SidebarNav({ userRole }: SidebarNavProps) {
   const pathname = usePathname();
   const items = menuItems[userRole];
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
   return (
-    <nav className="space-y-1">
+    <nav className="space-y-1.5">
       {items.map((item) => {
         const Icon = item.icon;
-        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-        
+        const isActive =
+          pathname === item.href ||
+          pathname.startsWith(`${item.href}/`);
+
         return (
-          <motion.div
+          <a
             key={item.href}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            href={item.href}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${
+              isActive
+                ? "bg-indigo-50 text-indigo-700 font-bold"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium"
+            }`}
+            title={isCollapsed ? item.label : ""}
           >
-            <Button
-              variant={isActive ? "secondary" : "ghost"}
-              className={cn(
-                "w-full justify-start",
-                isActive && "bg-secondary font-semibold"
-              )}
-              asChild
+            <Icon
+              size={20}
+              className={`${
+                isActive
+                  ? "text-indigo-600"
+                  : "text-slate-400 group-hover:text-slate-600"
+              } shrink-0`}
+            />
+            <span
+              className={`text-sm truncate transition-all duration-300 ${
+                isCollapsed
+                  ? "lg:opacity-0 lg:w-0"
+                  : "opacity-100 w-auto"
+              }`}
             >
-              <a href={item.href}>
-                <Icon className="mr-2 h-4 w-4" />
-                {item.label}
-              </a>
-            </Button>
-          </motion.div>
+              {item.label}
+            </span>
+
+            {isActive && (
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-indigo-600 rounded-r-full hidden lg:block" />
+            )}
+          </a>
         );
       })}
     </nav>

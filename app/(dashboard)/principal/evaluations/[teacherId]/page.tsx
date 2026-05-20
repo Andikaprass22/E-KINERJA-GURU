@@ -2,18 +2,11 @@
 
 import { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import { EvaluationForm } from "@/components/dashboard/evaluation-form";
 import { EvaluationHistory } from "@/components/dashboard/evaluation-history";
+import { SemesterSelector } from "@/components/dashboard/semester-selector";
 import { getEvaluationsBySemester, reviseEvaluation } from "@/lib/actions/evaluations";
 
 interface EvaluationRow {
@@ -26,12 +19,6 @@ interface EvaluationRow {
   category: string;
 }
 
-interface Semester {
-  id: string;
-  name: string;
-  isActive: boolean;
-}
-
 export default function RevisionPage({
   params,
 }: {
@@ -39,22 +26,9 @@ export default function RevisionPage({
 }) {
   const { teacherId } = use(params);
   const router = useRouter();
-  const [semesters, setSemesters] = useState<Semester[]>([]);
   const [selectedSemester, setSelectedSemester] = useState("");
   const [evaluation, setEvaluation] = useState<EvaluationRow | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const loadSemesters = useCallback(async () => {
-    try {
-      const res = await fetch("/api/semesters");
-      const data = await res.json();
-      setSemesters(data);
-      const active = data.find((s: Semester) => s.isActive);
-      if (active) setSelectedSemester(active.id);
-    } catch (error) {
-      console.error("Failed to load semesters:", error);
-    }
-  }, []);
 
   const loadEvaluation = useCallback(async () => {
     if (!selectedSemester) return;
@@ -76,10 +50,6 @@ export default function RevisionPage({
   }, [selectedSemester, teacherId]);
 
   useEffect(() => {
-    loadSemesters();
-  }, [loadSemesters]);
-
-  useEffect(() => {
     loadEvaluation();
   }, [loadEvaluation]);
 
@@ -93,68 +63,52 @@ export default function RevisionPage({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.back()}
+          className="rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+        >
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold">Revisi Evaluasi</h1>
-          <p className="text-muted-foreground">
+          <h2 className="text-lg font-semibold text-slate-900">Revisi Evaluasi</h2>
+          <p className="text-sm text-slate-500 mt-1">
             Revisi nilai evaluasi kinerja guru
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Semester:</span>
-        <Select value={selectedSemester} onValueChange={setSelectedSemester}>
-          <SelectTrigger className="w-[250px]">
-            <SelectValue placeholder="Pilih semester" />
-          </SelectTrigger>
-          <SelectContent>
-            {semesters.map((semester) => (
-              <SelectItem key={semester.id} value={semester.id}>
-                {semester.name}
-                {semester.isActive && " (Aktif)"}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <SemesterSelector value={selectedSemester} onChange={setSelectedSemester} />
 
       {isLoading ? (
-        <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            Memuat data...
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm text-center text-slate-400">
+          Memuat data...
+        </div>
       ) : !evaluation ? (
-        <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            Evaluasi tidak ditemukan untuk guru ini pada semester yang dipilih
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm text-center text-slate-400">
+          Evaluasi tidak ditemukan untuk guru ini pada semester yang dipilih
+        </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Form Revisi</CardTitle>
-              <CardDescription>
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm">
+            <div className="mb-6">
+              <h3 className="text-base font-bold text-slate-900">Form Revisi</h3>
+              <p className="text-sm text-slate-500 mt-0.5">
                 Evaluasi oleh: {evaluation.evaluator.name}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <EvaluationForm
-                teachers={[evaluation.teacher]}
-                semesterId={selectedSemester}
-                initialScores={evaluation.scores}
-                initialTeacherId={teacherId}
-                onSubmit={handleSubmit}
-                onCancel={() => router.back()}
-              />
-            </CardContent>
-          </Card>
+              </p>
+            </div>
+            <EvaluationForm
+              teachers={[evaluation.teacher]}
+              semesterId={selectedSemester}
+              initialScores={evaluation.scores}
+              initialTeacherId={teacherId}
+              onSubmit={handleSubmit}
+              onCancel={() => router.back()}
+            />
+          </div>
 
           <div>
             <EvaluationHistory evaluationId={evaluation.id} />
