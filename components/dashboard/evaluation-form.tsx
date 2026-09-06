@@ -63,12 +63,12 @@ function StarRatingInput({
             className={`h-6 w-6 cursor-pointer transition-colors ${
               i <= (hover || value)
                 ? "fill-amber-400 text-amber-400"
-                : "text-slate-200 hover:text-amber-200"
+                : "text-border hover:text-amber-200"
             }`}
           />
         </button>
       ))}
-      <span className="ml-2 text-sm font-medium text-slate-700">{value}/5</span>
+      <span className="ml-2 text-sm font-medium text-foreground">{value}/5</span>
     </div>
   );
 }
@@ -146,19 +146,19 @@ export function EvaluationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-3 text-sm text-red-600 bg-red-50 rounded-xl border border-red-100">
+        <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label className="text-sm font-semibold text-slate-700">Guru</Label>
+        <Label className="text-sm font-semibold text-foreground">Guru</Label>
         <Select
           value={teacherId}
           onValueChange={setTeacherId}
           disabled={!!initialTeacherId}
         >
-          <SelectTrigger className="rounded-xl border-slate-200">
+          <SelectTrigger className="rounded-xl border-border">
             <SelectValue placeholder="Pilih guru" />
           </SelectTrigger>
           <SelectContent>
@@ -172,14 +172,14 @@ export function EvaluationForm({
       </div>
 
       <div className="space-y-4">
-        <Label className="text-sm font-semibold text-slate-700">Aspek Penilaian</Label>
+        <Label className="text-sm font-semibold text-foreground">Aspek Penilaian</Label>
         <div className="grid gap-3 md:grid-cols-2">
           {DOCUMENT_TYPES.map((dt) => (
             <div
               key={dt}
-              className="flex items-center justify-between p-3 border border-slate-100 rounded-xl bg-white hover:border-slate-200 transition-colors"
+              className="flex items-center justify-between p-3 border border-border rounded-xl bg-card hover:border-primary/20 transition-colors"
             >
-              <span className="text-sm font-medium text-slate-700">{DocumentTypeLabel[dt]}</span>
+              <span className="text-sm font-medium text-foreground">{DocumentTypeLabel[dt]}</span>
               <StarRatingInput
                 value={scores[dt]}
                 onChange={(v) => handleScoreChange(dt, v)}
@@ -189,14 +189,14 @@ export function EvaluationForm({
         </div>
       </div>
 
-      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+      <div className="bg-muted rounded-xl p-4 border border-border">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Nilai Akhir</p>
-            <p className="text-2xl font-extrabold text-slate-900">{finalScore.toFixed(2)}</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">Nilai Akhir</p>
+            <p className="text-2xl font-extrabold text-foreground">{finalScore.toFixed(2)}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Kategori</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">Kategori</p>
             <span className={`inline-flex items-center text-sm font-bold px-3 py-1 rounded-full ${getCategoryColor(category)}`}>
               {category} - {getCategoryLabel(category)}
             </span>
@@ -209,14 +209,14 @@ export function EvaluationForm({
           type="button"
           variant="outline"
           onClick={onCancel}
-          className="rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50"
+          className="rounded-xl border-border text-foreground hover:bg-muted"
         >
           Batal
         </Button>
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm"
+          className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {initialTeacherId ? "Perbarui" : "Simpan"} Evaluasi

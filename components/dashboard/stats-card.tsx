@@ -59,25 +59,25 @@ export function StatsCard({
   suffix = "",
   description,
   icon: Icon,
-  color = "text-indigo-500",
-  bgColor = "bg-indigo-50",
+  color = "text-primary",
+  bgColor = "bg-secondary",
 }: StatsCardProps) {
-  // Extract border color from bgColor (e.g., "bg-indigo-50" -> "border-l-indigo-500")
-  const borderColor = bgColor.replace("bg-", "border-l-").replace("-50", "-500");
+  // Extract border color from bgColor (e.g., "bg-secondary" -> handled via primary fallback, keep logic for legacy)
+  const borderColor = bgColor.includes("secondary") ? "border-l-primary" : bgColor.replace("bg-", "border-l-").replace("-50", "-500");
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 ${borderColor} shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5`}
+      className={`bg-card rounded-2xl p-5 sm:p-6 border border-border border-l-4 ${borderColor} shadow-md hover:shadow-lg hover:border-border transition-all group ring-1 ring-foreground/5`}
     >
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
-          <p className="text-xs font-medium text-slate-500 mb-1">
+          <p className="text-xs font-medium text-muted-foreground mb-1">
             {title}
           </p>
-          <h3 className="text-2xl font-bold text-slate-900">
+          <h3 className="text-2xl font-bold text-foreground">
             <AnimatedNumber value={value} suffix={suffix} />
           </h3>
         </div>
@@ -87,7 +87,7 @@ export function StatsCard({
           <Icon size={22} />
         </div>
       </div>
-      <div className="flex items-center text-xs font-medium text-slate-500">
+      <div className="flex items-center text-xs font-medium text-muted-foreground">
         {description}
       </div>
     </motion.div>

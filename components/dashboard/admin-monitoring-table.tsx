@@ -80,16 +80,16 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow ring-1 ring-slate-900/5">
-      <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white relative z-10">
+    <div className="bg-card rounded-2xl border border-border shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow ring-1 ring-foreground/5">
+      <div className="p-5 sm:p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-card relative z-10">
         <div>
-          <h3 className="text-sm font-medium text-slate-900">Monitoring Kinerja Guru</h3>
-          <p className="text-xs text-slate-500">Pantau kelengkapan dokumen dan evaluasi</p>
+          <h3 className="text-sm font-medium text-foreground">Monitoring Kinerja Guru</h3>
+          <p className="text-xs text-muted-foreground">Pantau kelengkapan dokumen dan evaluasi</p>
         </div>
         <Button
           asChild
           variant="ghost"
-          className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-xl transition-colors active:scale-95 w-full sm:w-auto"
+          className="text-sm font-semibold text-primary hover:text-primary bg-secondary hover:bg-secondary/80 px-4 py-2 rounded-xl transition-colors active:scale-95 w-full sm:w-auto"
         >
           <Link href="/admin/submissions">Lihat Semua Data</Link>
         </Button>
@@ -173,7 +173,7 @@ export function AdminMonitoringTable({ semesterId }: AdminMonitoringTableProps) 
                     </span>
                   </td>
                   <td className="p-4 pr-5 sm:pr-6 text-center">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary">
                       <MoreVertical size={18} />
                     </Button>
                   </td>

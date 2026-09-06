@@ -70,12 +70,12 @@ export function AdminStatsCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 border-l-4 ${borderColor} shadow-md hover:shadow-lg hover:border-slate-200 transition-all group ring-1 ring-slate-900/5`}
+      className={`bg-card rounded-2xl p-5 sm:p-6 border border-border border-l-4 ${borderColor} shadow-md hover:shadow-lg hover:border-border transition-all group ring-1 ring-foreground/5`}
     >
       <div className="flex justify-between items-start">
         <div>
-          <p className="text-sm font-medium text-slate-500 mb-1.5">{title}</p>
-          <h3 className="text-2xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+          <p className="text-sm font-medium text-muted-foreground mb-1.5">{title}</p>
+          <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
             <AnimatedNumber value={value} suffix={suffix} />
           </h3>
         </div>
@@ -83,7 +83,7 @@ export function AdminStatsCard({
           <Icon size={24} className={color} />
         </div>
       </div>
-      <div className="mt-4 flex items-center text-xs font-medium text-slate-400">
+      <div className="mt-4 flex items-center text-xs font-medium text-muted-foreground">
         <span>{subtitle}</span>
       </div>
     </motion.div>

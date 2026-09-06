@@ -31,18 +31,18 @@ async function SessionCheck({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-slate-50 font-sans text-slate-900 overflow-hidden selection:bg-indigo-100 selection:text-indigo-900 w-full">
-        <Sidebar className="border-r border-slate-200 bg-white shadow-2xl lg:shadow-none">
-          <SidebarHeader className="h-16 flex items-center justify-between px-5 border-b border-slate-100 shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm shadow-indigo-200">
+      <div className="flex h-screen bg-muted/40 font-sans text-foreground overflow-hidden selection:bg-primary/20 selection:text-primary w-full">
+        <Sidebar className="border-r border-border bg-card shadow-2xl lg:shadow-none">
+          <SidebarHeader className="h-16 border-b border-border shrink-0 items-start justify-center ps-1 pe-5">
+            <div className="flex items-center gap-3 w-[159px]">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-teal-700 flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm shadow-primary/20">
                 E
               </div>
               <div className="group-data-[collapsible=icon]:hidden overflow-hidden transition-all duration-300">
-                <h1 className="font-bold text-sm leading-tight text-slate-900 tracking-tight whitespace-nowrap">
+                <h1 className="font-bold text-sm leading-tight text-foreground tracking-tight whitespace-nowrap">
                   E-KINERJA GURU
                 </h1>
-                <p className="text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                <p className="text-[11px] text-muted-foreground font-medium whitespace-nowrap">
                   SD N 1 Pancor
                 </p>
               </div>

@@ -42,7 +42,7 @@ export function UsersTable({ users }: UsersTableProps) {
   const getRoleBadge = (role: UserRole) => {
     const colors: Record<UserRole, string> = {
       ADMIN: "bg-red-100 text-red-700",
-      PRINCIPAL: "bg-indigo-100 text-indigo-700",
+      PRINCIPAL: "bg-secondary text-primary",
       TEACHER: "bg-blue-100 text-blue-700",
     };
     const labels: Record<UserRole, string> = {
@@ -180,7 +180,7 @@ export function UsersTable({ users }: UsersTableProps) {
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg text-muted-foreground hover:text-primary hover:bg-secondary">
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>

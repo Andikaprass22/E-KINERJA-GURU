@@ -79,7 +79,7 @@ export default function LoginPage() {
             initial={{ x: "-100%" }}
             animate={{ x: "0%" }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center"
+            className="fixed inset-0 z-50 bg-gradient-to-br from-primary to-teal-800 flex items-center justify-center"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -96,7 +96,7 @@ export default function LoginPage() {
         )}
       </AnimatePresence>
 
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 p-10 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-[#1E3A6B] to-teal-800 p-10 flex-col justify-between relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-64 h-64 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-20 right-10 w-48 h-48 rounded-full bg-white blur-3xl" />
@@ -109,7 +109,7 @@ export default function LoginPage() {
             </div>
             <div>
               <h1 className="text-white font-bold text-lg leading-tight">E-KINERJA GURU</h1>
-              <p className="text-indigo-200 text-xs">SD N 1 Pancor</p>
+              <p className="text-blue-200 text-xs">SD N 1 Pancor</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
           <h2 className="text-3xl font-bold text-white leading-tight">
             Sistem Manajemen<br />Kinerja Guru
           </h2>
-          <p className="text-indigo-100 text-sm leading-relaxed max-w-sm">
+          <p className="text-blue-100 text-sm leading-relaxed max-w-sm">
             Platform modern untuk mengelola administrasi, evaluasi, dan monitoring kinerja guru secara terintegrasi.
           </p>
 
@@ -132,11 +132,11 @@ export default function LoginPage() {
                 className="flex items-center gap-3"
               >
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                  <item.icon className="h-4 w-4 text-indigo-200" />
+                  <item.icon className="h-4 w-4 text-blue-200" />
                 </div>
                 <div>
                   <p className="text-white text-sm font-medium">{item.title}</p>
-                  <p className="text-indigo-200 text-xs">{item.desc}</p>
+                  <p className="text-blue-200 text-xs">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -144,11 +144,11 @@ export default function LoginPage() {
         </div>
 
         <div className="relative z-10">
-          <p className="text-indigo-300 text-xs">Sistem Informasi Kinerja Guru</p>
+          <p className="text-blue-300 text-xs">Sistem Informasi Kinerja Guru</p>
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-white">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-card">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -156,21 +156,21 @@ export default function LoginPage() {
           className="w-full max-w-sm"
         >
           <div className="lg:hidden mb-8 text-center">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-3 shadow-md shadow-indigo-200">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-teal-700 flex items-center justify-center mx-auto mb-3 shadow-md shadow-primary/20">
               <BookOpen className="h-6 w-6 text-white" />
             </div>
-            <h1 className="font-bold text-slate-900">E-KINERJA GURU</h1>
-            <p className="text-xs text-slate-500">SD N 1 Pancor</p>
+            <h1 className="font-bold text-foreground">E-KINERJA GURU</h1>
+            <p className="text-xs text-muted-foreground">SD N 1 Pancor</p>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-slate-900 mb-1">Masuk</h2>
-            <p className="text-sm text-slate-500">Masukkan kredensial Anda untuk melanjutkan</p>
+            <h2 className="text-lg font-semibold text-foreground mb-1">Masuk</h2>
+            <p className="text-sm text-muted-foreground">Masukkan kredensial Anda untuk melanjutkan</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-sm font-medium text-slate-700">Username</Label>
+              <Label htmlFor="username" className="text-sm font-medium text-foreground">Username</Label>
               <Input
                 id="username"
                 type="text"
@@ -179,11 +179,11 @@ export default function LoginPage() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 disabled={loading}
-                className="h-10 rounded-xl border-slate-200 focus:border-indigo-300 focus:ring-indigo-50"
+                className="h-10 rounded-xl border-border focus-visible:border-primary/50 focus-visible:ring-primary/20"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-slate-700">Password</Label>
+              <Label htmlFor="password" className="text-sm font-medium text-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -192,7 +192,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={loading}
-                className="h-10 rounded-xl border-slate-200 focus:border-indigo-300 focus:ring-indigo-50"
+                className="h-10 rounded-xl border-border focus-visible:border-primary/50 focus-visible:ring-primary/20"
               />
             </div>
 
@@ -208,7 +208,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white shadow-md shadow-indigo-200 text-sm font-medium gap-2 transition-all active:scale-[0.98] border-0"
+              className="w-full h-11 rounded-xl bg-gradient-to-r from-primary to-teal-700 hover:from-primary/90 hover:to-teal-800 text-white shadow-md shadow-primary/20 text-sm font-medium gap-2 transition-all active:scale-[0.98] border-0"
               disabled={loading}
             >
               {loading ? (
@@ -225,8 +225,8 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <p className="text-xs text-center text-slate-400">
+          <div className="mt-8 pt-6 border-t border-border">
+            <p className="text-xs text-center text-muted-foreground">
               SD N 1 Pancor &mdash; Sistem Manajemen Kinerja Guru
             </p>
           </div>

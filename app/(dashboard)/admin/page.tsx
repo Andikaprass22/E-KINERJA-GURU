@@ -50,8 +50,8 @@ export default function AdminDashboard() {
           value={stats?.totalTeachers || 0}
           subtitle="Guru terdaftar"
           icon={Users}
-          color="text-indigo-600"
-          bgColor="bg-indigo-50"
+          color="text-primary"
+          bgColor="bg-secondary"
         />
         <AdminStatsCard
           title="Dokumen Terkumpul"
@@ -75,16 +75,16 @@ export default function AdminDashboard() {
           value={stats?.evaluatedTeachers || 0}
           subtitle={`${stats?.totalTeachers || 0} guru total`}
           icon={BarChart3}
-          color="text-violet-500"
-          bgColor="bg-violet-50"
+          color="text-teal-700"
+          bgColor="bg-accent"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-slate-900/5">
+        <div className="lg:col-span-1 bg-card rounded-2xl p-5 sm:p-6 border border-border shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-foreground/5">
           <div className="mb-6">
-            <h3 className="text-base font-bold text-slate-900">Distribusi Kategori</h3>
-            <p className="text-sm text-slate-500 mt-0.5">Hasil evaluasi berdasarkan kategori</p>
+            <h3 className="text-base font-bold text-foreground">Distribusi Kategori</h3>
+            <p className="text-sm text-muted-foreground mt-0.5">Hasil evaluasi berdasarkan kategori</p>
           </div>
           <AdminDonutChart
             distribution={stats?.categoryDistribution || { A: 0, B: 0, C: 0, D: 0 }}

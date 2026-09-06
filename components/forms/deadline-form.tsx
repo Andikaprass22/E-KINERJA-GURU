@@ -93,7 +93,7 @@ export function DeadlineForm({ semesterId, existingDeadlines }: DeadlineFormProp
       <div className="grid gap-3 sm:grid-cols-2">
         {documentTypes.map((type) => (
           <div key={type} className="space-y-1.5">
-            <Label className="text-sm font-medium text-slate-700">
+            <Label className="text-sm font-medium text-foreground">
               {DocumentTypeLabel[type]}
             </Label>
             <Popover open={openPopover === type} onOpenChange={(open) => setOpenPopover(open ? type : null)}>
@@ -102,11 +102,11 @@ export function DeadlineForm({ semesterId, existingDeadlines }: DeadlineFormProp
                   type="button"
                   variant="outline"
                   className={cn(
-                    "w-full justify-start text-left rounded-xl border-slate-200 font-normal hover:bg-slate-50 h-9 text-sm",
-                    !deadlines[type] && "text-slate-400"
+                    "w-full justify-start text-left rounded-xl border-border font-normal hover:bg-muted h-9 text-sm",
+                    !deadlines[type] && "text-muted-foreground"
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                  <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                   {deadlines[type]
                     ? format(deadlines[type], "dd MMMM yyyy", { locale: idLocale })
                     : "Pilih tanggal"}
@@ -138,7 +138,7 @@ export function DeadlineForm({ semesterId, existingDeadlines }: DeadlineFormProp
       <Button
         type="submit"
         disabled={isSaving}
-        className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm h-10 text-sm font-medium"
+        className="w-full rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm h-10 text-sm font-medium"
       >
         {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {isSaving ? "Menyimpan..." : "Simpan Semua Deadline"}

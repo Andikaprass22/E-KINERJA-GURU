@@ -34,8 +34,8 @@ export default function PrincipalDashboard() {
     <div className="space-y-6 sm:space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">Dashboard Kepala Sekolah</h2>
-          <p className="text-sm text-slate-500 mt-1">
+          <h2 className="text-lg font-semibold text-foreground">Dashboard Kepala Sekolah</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             {stats?.activeSemester
               ? `Semester: ${stats.activeSemester.name}`
               : "Pantau ringkasan kinerja dan kelengkapan dokumen guru."}
@@ -50,8 +50,8 @@ export default function PrincipalDashboard() {
           value={stats?.totalTeachers || 0}
           subtitle="Guru terdaftar"
           icon={Users}
-          color="text-indigo-600"
-          bgColor="bg-indigo-50"
+          color="text-primary"
+          bgColor="bg-secondary"
         />
         <AdminStatsCard
           title="Dokumen Terkumpul"
@@ -75,16 +75,16 @@ export default function PrincipalDashboard() {
           value={stats?.evaluatedTeachers || 0}
           subtitle={`${stats?.totalTeachers || 0} guru total`}
           icon={BarChart3}
-          color="text-violet-500"
-          bgColor="bg-violet-50"
+          color="text-teal-700"
+          bgColor="bg-accent"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-slate-900/5">
+        <div className="lg:col-span-1 bg-card rounded-2xl p-5 sm:p-6 border border-border shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-foreground/5">
           <div className="mb-6">
-            <h3 className="text-base font-bold text-slate-900">Distribusi Kategori</h3>
-            <p className="text-sm text-slate-500 mt-0.5">Hasil evaluasi berdasarkan kategori</p>
+            <h3 className="text-base font-bold text-foreground">Distribusi Kategori</h3>
+            <p className="text-sm text-muted-foreground mt-0.5">Hasil evaluasi berdasarkan kategori</p>
           </div>
           <AdminDonutChart
             distribution={stats?.categoryDistribution || { A: 0, B: 0, C: 0, D: 0 }}
@@ -92,10 +92,10 @@ export default function PrincipalDashboard() {
           />
         </div>
 
-        <div className="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-slate-900/5">
+        <div className="lg:col-span-2 bg-card rounded-2xl p-5 sm:p-6 border border-border shadow-md flex flex-col hover:shadow-lg transition-shadow ring-1 ring-foreground/5">
           <div className="mb-6">
-            <h3 className="text-base font-bold text-slate-900">Aksi Cepat</h3>
-            <p className="text-sm text-slate-500 mt-0.5">Monitoring dan evaluasi kinerja guru</p>
+            <h3 className="text-base font-bold text-foreground">Aksi Cepat</h3>
+            <p className="text-sm text-muted-foreground mt-0.5">Monitoring dan evaluasi kinerja guru</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 flex-1">
             <Link
@@ -112,14 +112,14 @@ export default function PrincipalDashboard() {
             </Link>
             <Link
               href="/principal/archive"
-              className="group p-4 rounded-xl border border-slate-100 hover:border-indigo-300 hover:bg-indigo-50/50 cursor-pointer transition-all duration-200 flex items-start gap-4 active:scale-[0.98]"
+              className="group p-4 rounded-xl border border-border hover:border-primary/30 hover:bg-secondary/50 cursor-pointer transition-all duration-200 flex items-start gap-4 active:scale-[0.98]"
             >
-              <div className="w-12 h-12 rounded-xl bg-indigo-100 group-hover:bg-white group-hover:shadow-sm flex items-center justify-center shrink-0 transition-all duration-200">
-                <BarChart3 size={22} className="text-indigo-600 transition-colors group-hover:scale-110" />
+              <div className="w-12 h-12 rounded-xl bg-secondary group-hover:bg-card group-hover:shadow-sm flex items-center justify-center shrink-0 transition-all duration-200">
+                <BarChart3 size={22} className="text-primary transition-colors group-hover:scale-110" />
               </div>
               <div className="flex-1 pt-1">
-                <h4 className="text-sm font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">Arsip Laporan</h4>
-                <p className="text-xs text-slate-500 mt-1">Data historis</p>
+                <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">Arsip Laporan</h4>
+                <p className="text-xs text-muted-foreground mt-1">Data historis</p>
               </div>
             </Link>
           </div>

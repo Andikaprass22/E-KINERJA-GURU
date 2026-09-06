@@ -56,31 +56,31 @@ export function SemesterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-sm font-semibold text-slate-700">Nama Semester</Label>
+        <Label htmlFor="name" className="text-sm font-semibold text-foreground">Nama Semester</Label>
         <Input
           id="name"
           name="name"
           type="text"
           placeholder="Contoh: Semester Ganjil 2025/2026"
           required
-          className="rounded-xl border-slate-200 focus:border-indigo-300 focus:ring-indigo-50"
+          className="rounded-xl border-border focus-visible:border-primary/50 focus-visible:ring-primary/20"
         />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label className="text-sm font-semibold text-slate-700">Tanggal Mulai</Label>
+          <Label className="text-sm font-semibold text-foreground">Tanggal Mulai</Label>
           <Popover open={startOpen} onOpenChange={setStartOpen}>
             <PopoverTrigger asChild>
               <Button
                 type="button"
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left rounded-xl border-slate-200 font-normal hover:bg-slate-50",
-                  !startDate && "text-slate-400"
+                  "w-full justify-start text-left rounded-xl border-border font-normal hover:bg-muted",
+                  !startDate && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                 {startDate ? format(startDate, "dd MMMM yyyy", { locale: idLocale }) : "Pilih tanggal mulai"}
               </Button>
             </PopoverTrigger>
@@ -98,18 +98,18 @@ export function SemesterForm() {
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-semibold text-slate-700">Tanggal Selesai</Label>
+          <Label className="text-sm font-semibold text-foreground">Tanggal Selesai</Label>
           <Popover open={endOpen} onOpenChange={setEndOpen}>
             <PopoverTrigger asChild>
               <Button
                 type="button"
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left rounded-xl border-slate-200 font-normal hover:bg-slate-50",
-                  !endDate && "text-slate-400"
+                  "w-full justify-start text-left rounded-xl border-border font-normal hover:bg-muted",
+                  !endDate && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4 text-slate-400" />
+                <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                 {endDate ? format(endDate, "dd MMMM yyyy", { locale: idLocale }) : "Pilih tanggal selesai"}
               </Button>
             </PopoverTrigger>
@@ -130,7 +130,7 @@ export function SemesterForm() {
 
       <Button
         type="submit"
-        className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm h-11 text-sm font-semibold"
+        className="w-full rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm h-11 text-sm font-semibold"
         disabled={loading}
       >
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

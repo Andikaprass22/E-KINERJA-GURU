@@ -56,8 +56,8 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
             href={item.href}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative ${
               isActive
-                ? "bg-indigo-50 text-indigo-700 font-bold"
-                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium"
+                ? "bg-secondary text-primary font-bold"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
             }`}
             title={isCollapsed ? item.label : ""}
           >
@@ -65,8 +65,8 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
               size={20}
               className={`${
                 isActive
-                  ? "text-indigo-600"
-                  : "text-slate-400 group-hover:text-slate-600"
+                  ? "text-primary"
+                  : "text-muted-foreground group-hover:text-foreground"
               } shrink-0`}
             />
             <span
@@ -80,7 +80,7 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
             </span>
 
             {isActive && (
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-indigo-600 to-violet-600 rounded-r-full hidden lg:block" />
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-primary to-teal-700 rounded-r-full hidden lg:block" />
             )}
           </a>
         );
