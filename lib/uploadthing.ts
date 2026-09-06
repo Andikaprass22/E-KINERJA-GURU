@@ -47,7 +47,19 @@ export const uploadRouter = {
       maxFileSize: "16MB",
       maxFileCount: 1,
     },
+    "application/msword": {
+      maxFileSize: "16MB",
+      maxFileCount: 1,
+    },
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+      maxFileSize: "16MB",
+      maxFileCount: 1,
+    },
+    "application/vnd.ms-excel": {
+      maxFileSize: "16MB",
+      maxFileCount: 1,
+    },
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
       maxFileSize: "16MB",
       maxFileCount: 1,
     },

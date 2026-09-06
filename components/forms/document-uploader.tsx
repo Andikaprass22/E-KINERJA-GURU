@@ -5,6 +5,7 @@ import { saveSubmissionAction } from "@/lib/actions/submissions";
 import { Button } from "@/components/ui/button";
 import { Upload, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUploadThing } from "@/lib/uploadthing-client";
 import type { DocumentType } from "@/lib/types";
 
 interface DocumentUploaderProps {
@@ -13,54 +14,45 @@ interface DocumentUploaderProps {
 }
 
 export function DocumentUploader({ documentType, semesterId }: DocumentUploaderProps) {
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  const { startUpload, isUploading } = useUploadThing("documentUploader", {
+    onClientUploadComplete: async (res) => {
+      if (!res || res.length === 0) {
+        setError("Upload gagal - tidak ada file yang diterima");
+        return;
+      }
+
+      const file = res[0];
+      const result = await saveSubmissionAction(
+        file.ufsUrl,
+        file.key,
+        documentType,
+        semesterId
+      );
+
+      if (!result.success) {
+        setError(result.error || "Gagal menyimpan dokumen");
+      } else {
+        router.refresh();
+      }
+    },
+    onUploadError: () => {
+      setError("Gagal mengunggah dokumen");
+    },
+  });
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
     setError(null);
-
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/uploadthing", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (!data || !data.url || !data.key) {
-        setError("Upload gagal - tidak ada file yang diterima");
-        setUploading(false);
-        return;
-      }
-
-      const result = await saveSubmissionAction(
-        data.url,
-        data.key,
-        documentType,
-        semesterId
-      );
-
-      if (result.success) {
-        router.refresh();
-      } else {
-        setError(result.error || "Gagal menyimpan dokumen");
-      }
-    } catch (err) {
-      setError("Gagal mengunggah dokumen");
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      await startUpload([file]);
+    } catch {
+      // Error is handled by onUploadError callback
     }
   };
 
@@ -79,10 +71,10 @@ export function DocumentUploader({ documentType, semesterId }: DocumentUploaderP
       <Button
         size="sm"
         className="w-full"
-        disabled={uploading}
+        disabled={isUploading}
         onClick={() => fileInputRef.current?.click()}
       >
-        {uploading ? (
+        {isUploading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Mengunggah...
