@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-
+import { Agentation } from "agentation";
+import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "CodeNight Starter",
-  description:
-    "A starter template for building a full-stack application with Next.js, Prisma, and UploadThing. It includes authentication, file uploads, and a dashboard layout.",
+  title: "E-KINERJA GURU — SD N 1 Pancor",
+  description: "Sistem evaluasi kinerja guru SD N 1 Pancor",
 };
 
 export default function RootLayout({
@@ -26,11 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="id" className={`${inter.variable} light`} suppressHydrationWarning>
+      <body className={`${inter.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+        <Toaster position="top-right" richColors />
+        {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>
   );

@@ -2,9 +2,33 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { multiSession } from "better-auth/plugins/multi-session";
+import { username } from "better-auth/plugins";
+import { admin } from "better-auth/plugins/admin";
+import { createAccessControl } from "better-auth/plugins/access";
 import { prisma } from "./prisma";
+import bcrypt from "bcrypt";
 
-// Better Auth configuration with Prisma adapter
+const statement = {
+  user: ["read", "update"],
+  admin: ["read", "update", "delete", "ban"],
+} as const;
+
+const ac = createAccessControl(statement);
+
+const adminRole = ac.newRole({
+  user: ["read", "update"],
+  admin: ["read", "update", "delete", "ban"],
+});
+
+const principalRole = ac.newRole({
+  user: ["read", "update"],
+  admin: ["read", "update"],
+});
+
+const teacherRole = ac.newRole({
+  user: ["read", "update"],
+});
+
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   trustedOrigins:
@@ -14,22 +38,62 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  // Email & password authentication using Better Auth
-  emailAndPassword: {
-    enabled: true,
-  },
-  // Session management with cookie cache
-  session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 24 hours
-    cookieCache: {
-      enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+  user: {
+    additionalFields: {
+      username: {
+        type: "string",
+        required: true,
+        unique: true,
+      },
+      role: {
+        type: ["ADMIN", "PRINCIPAL", "TEACHER"],
+        required: false,
+        defaultValue: "TEACHER",
+        input: false,
+      },
+      isActive: {
+        type: "boolean",
+        required: false,
+        defaultValue: true,
+        input: false,
+      },
     },
   },
-  plugins: [nextCookies(), multiSession()],
+  emailAndPassword: {
+    enabled: true,
+    password: {
+      hash: async (password) => {
+        return await bcrypt.hash(password, 10);
+      },
+      verify: async ({ hash, password }) => {
+        return await bcrypt.compare(password, hash);
+      },
+    },
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
+  },
+  plugins: [
+    nextCookies(),
+    multiSession(),
+    username(),
+    admin({
+      ac,
+      roles: {
+        ADMIN: adminRole,
+        PRINCIPAL: principalRole,
+        TEACHER: teacherRole,
+      },
+      defaultRole: "TEACHER",
+      adminRoles: ["ADMIN", "PRINCIPAL"],
+    }),
+  ],
   advanced: {
-    // Only send cookies over HTTPS in production
     useSecureCookies: process.env.NODE_ENV === "production",
   },
 });

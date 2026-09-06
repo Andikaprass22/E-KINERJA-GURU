@@ -5,9 +5,7 @@ import { headers } from "next/headers";
 
 const f = createUploadthing();
 
-// UploadThing file router with authentication middleware
 export const uploadRouter = {
-  // Image upload: max 4MB, requires authentication
   imageUploader: f({
     image: {
       maxFileSize: "4MB",
@@ -22,10 +20,10 @@ export const uploadRouter = {
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Image upload complete for userId:", metadata.userId);
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
     }),
 
-  // File upload: max 16MB, requires authentication
   fileUploader: f({
     blob: {
       maxFileSize: "16MB",
@@ -40,7 +38,36 @@ export const uploadRouter = {
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      console.log("File upload complete for userId:", metadata.userId);
       return { uploadedBy: metadata.userId, url: file.ufsUrl };
+    }),
+
+  documentUploader: f({
+    pdf: {
+      maxFileSize: "16MB",
+      maxFileCount: 1,
+    },
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+      maxFileSize: "16MB",
+      maxFileCount: 1,
+    },
+  }, {
+    awaitServerData: true,
+  })
+    .middleware(async () => {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      if (!session) throw new UploadThingError("Unauthorized");
+      if (session.user.role !== "TEACHER" && session.user.role !== "ADMIN") {
+        throw new UploadThingError("Hanya guru yang dapat mengunggah dokumen");
+      }
+      console.log("Document upload middleware passed for userId:", session.user.id);
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Document upload complete for userId:", metadata.userId, "url:", file.ufsUrl, "key:", file.key);
+      return { uploadedBy: metadata.userId, url: file.ufsUrl, key: file.key };
     }),
 } satisfies FileRouter;
 

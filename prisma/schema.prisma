@@ -7,10 +7,43 @@ datasource db {
     provider = "postgresql"
 }
 
-model user {
+enum UserRole {
+    ADMIN
+    PRINCIPAL
+    TEACHER
+}
+
+enum DocumentType {
+    RPP
+    SYLLABUS
+    LEARNING_ACHIEVEMENT
+    TIME_ALLOCATION
+    KKTP
+    SEMESTER_PROGRAM
+    ANNUAL_PROGRAM
+    TEACHING_JOURNAL
+}
+
+enum SubmissionStatus {
+    COMPLETED
+    LATE
+    MISSING
+}
+
+enum EvaluationCategory {
+    A
+    B
+    C
+    D
+}
+
+model User {
     id             String          @id @default(cuid())
     name           String
     email          String          @unique
+    username       String          @unique
+    role           UserRole        @default(TEACHER)
+    isActive       Boolean         @default(true)
     emailVerified  Boolean         @default(false)
     image          String?
     createdAt      DateTime        @default(now())
@@ -18,6 +51,11 @@ model user {
     sessions       session[]
     accounts       account[]
     deviceSessions deviceSession[]
+    submissions    DocumentSubmission[]
+    evaluations    Evaluation[]
+    evaluationHistories EvaluationHistory[]
+    changedEvaluations EvaluationHistory[] @relation("ChangedBy")
+    evaluatedEvaluations Evaluation[] @relation("Evaluator")
 }
 
 model session {
@@ -29,7 +67,7 @@ model session {
     ipAddress String?
     userAgent String?
     userId    String
-    user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
 }
@@ -39,7 +77,7 @@ model account {
     accountId             String
     providerId            String
     userId                String
-    user                  user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
     accessToken           String?
     refreshToken          String?
     idToken               String?
@@ -70,8 +108,91 @@ model deviceSession {
     userId    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@index([sessionId])
+}
+
+model Semester {
+    id          String              @id @default(cuid())
+    name        String
+    startDate   DateTime
+    endDate     DateTime
+    isActive    Boolean             @default(false)
+    createdAt   DateTime            @default(now())
+    updatedAt   DateTime            @updatedAt
+    submissions DocumentSubmission[]
+    deadlines   DocumentDeadline[]
+    evaluations Evaluation[]
+}
+
+model DocumentDeadline {
+    id           String       @id @default(cuid())
+    semesterId   String
+    semester     Semester     @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+    documentType DocumentType
+    deadline     DateTime
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+
+    @@unique([semesterId, documentType])
+    @@index([semesterId])
+}
+
+model DocumentSubmission {
+    id           String           @id @default(cuid())
+    teacherId    String
+    teacher      User             @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+    semesterId   String
+    semester     Semester         @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+    documentType DocumentType
+    fileUrl      String?
+    fileKey      String?
+    uploadedAt   DateTime?
+    status       SubmissionStatus @default(MISSING)
+    createdAt    DateTime         @default(now())
+    updatedAt    DateTime         @updatedAt
+
+    @@unique([teacherId, semesterId, documentType])
+    @@index([teacherId])
+    @@index([semesterId])
+}
+
+model Evaluation {
+    id          String              @id @default(cuid())
+    teacherId   String
+    teacher     User                @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+    semesterId  String
+    semester    Semester            @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+    evaluatorId String
+    evaluator   User                @relation("Evaluator", fields: [evaluatorId], references: [id], onDelete: Cascade)
+    scores      Json
+    finalScore  Float
+    category    EvaluationCategory
+    createdAt   DateTime            @default(now())
+    updatedAt   DateTime            @updatedAt
+    histories   EvaluationHistory[]
+
+    @@unique([teacherId, semesterId, evaluatorId])
+    @@index([teacherId])
+    @@index([semesterId])
+}
+
+model EvaluationHistory {
+    id            String     @id @default(cuid())
+    evaluationId  String
+    evaluation    Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+    changedById   String
+    changedBy     User       @relation("ChangedBy", fields: [changedById], references: [id], onDelete: Cascade)
+    userId        String
+    user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    previousScores Json
+    newScores     Json
+    reason        String?
+    changedAt     DateTime   @default(now())
+
+    @@index([evaluationId])
+    @@index([changedById])
+    @@index([userId])
 }
